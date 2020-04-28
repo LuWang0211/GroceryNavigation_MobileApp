@@ -1,5 +1,9 @@
 import React, {Component} from 'react';
-import {View, Button, Text} from 'react-native';
+import {View, Button, Text, ImageBackground, StyleSheet} from 'react-native';
+// import {
+//   Container,
+//   Content
+// } from 'native-base';
 // import { DrawerNavigator } from 'react-navigation';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
@@ -21,15 +25,22 @@ import {SplashScreen} from './screens/splashscreen';
 // //     Splash: Splash
 // // },RouteConfig)
 
+// const image = {uri: "../images/login.jpg"};
+const image = require("../images/login.jpg");
 
 export const HomeScreen = () => {
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Button
-        onPress={() => navigation.navigate('Notifications')}
-        title="Go to notifications"
-      />
-    </View>
+      <View style={styles.container}>
+
+        <ImageBackground source={image} style={styles.image}>
+            <Text  style={styles.text}>Hi, I'm your shopping assistant </Text>
+
+            <Button
+              onPress={() => navigation.navigate('Tap here to start')}
+              title="Tap here to start"
+            />
+        </ImageBackground>
+      </View>
   );
 }
 
@@ -46,4 +57,22 @@ export const AppNavigator = () => {
     </NavigationContainer>
   );
 }
-  
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: "column"
+  },
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center"
+  },
+  text: {
+    color: "white",
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center"
+  }
+})
