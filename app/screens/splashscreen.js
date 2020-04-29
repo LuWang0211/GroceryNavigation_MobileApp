@@ -1,41 +1,55 @@
 import React, { Component } from 'react';
-import { Image, View, Text } from 'react-native';
-// import { inject } from 'mobx-react';
+import {View, Button, Text, ImageBackground, StyleSheet} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-
-
-// export class HomeScreen  extends Component {
-//   constructor(props) {
-//     super(props)
-//   }
-
-//   render() {
-//     return <Text>"Test"</Text>;
-//   }
-// }
-
-export const HomeScreen = () => {
-  return <Text>"Test"</Text>;
-}
+const image = require("../../images/login.jpg");
 
 // @inject("stores")
-export class SplashScreen extends Component {
-  constructor(props) {
-    super(props)
-  }
+export const SplashScreen = (props) => {
+  // constructor(props) {
+  //   super(props)
+  // }
   // componentDidMount() {
   //   const {stores, navigation } = this.props;
   //   setTimeout(() => {
   //     navigation.navigate("Login")
   //   }, stores.config.SplashTime)
   // }
-  render() {
     // const { stores } = this.props
+
+    const navigation = useNavigation();
+
     return (
-      <View style={{flex: 1}}>
-        <Image style={{flex: 1, width: null, height: null}}/>
-        <Text>"Chudian dongxi"</Text>
+      <View style={styles.container}>
+
+        <ImageBackground source={image} style={styles.image}>
+            <Text  style={styles.text}>Hi, I'm your shopping assistant </Text>
+
+            <Button
+              title="Tap here to start"
+              onPress={() => navigation.navigate('Shopping List')}
+            />
+        </ImageBackground>
       </View>
     )
-  }
 }
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: 'center'
+  },
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center"
+  },
+  text: {
+    color: "white",
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center"
+  }
+})
