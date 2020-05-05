@@ -4,6 +4,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 
 import {SplashScreen} from './screens/splashscreen';
+import {HomeScreen} from './screens/homescreen';
 import {ShoppinglistScreen} from './screens/shoppinglistscreen';
 import {MapScreen} from './screens/mapscreen';
 
@@ -47,8 +48,9 @@ const Drawer = createDrawerNavigator();
 export const AppNavigator = () => {
   return (
     <NavigationContainer>
-      <Drawer.Navigator initialRouteName="Home">
-        <Drawer.Screen name="Home" component={SplashScreen} />
+      <Drawer.Navigator initialRouteName="Splash">
+        <Drawer.Screen name="Splash" component={SplashScreen} />
+        <Drawer.Screen name="Home" component={HomeScreen} />
         <Drawer.Screen name="Shopping List" component={ShoppinglistScreen} />
         <Drawer.Screen name="Map" component={MapScreen} />
       </Drawer.Navigator>

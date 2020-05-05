@@ -151,6 +151,11 @@ export class Partition extends Component {
       )
     }
 
+    if (right) {
+      console.log(blockStyles);
+    }
+    
+
     return (
       <View style={blockStyles} {...props}>
         {children}

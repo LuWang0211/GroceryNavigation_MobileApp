@@ -27,7 +27,7 @@ export const SplashScreen = (props) => {
 
             <Button
               title="Tap here to start"
-              onPress={() => navigation.navigate('Shopping List')}
+              onPress={() => navigation.navigate('Home')}
             />
         </ImageBackground>
       </View>
