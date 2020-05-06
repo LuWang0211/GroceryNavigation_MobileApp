@@ -1,10 +1,10 @@
-import React, { Component, useContext, useState, useMemo } from 'react';
+import React, { Component, useContext, useState } from 'react';
 import { Button, View, Text, StyleSheet, Alert, Image, ScrollView } from 'react-native';
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 import { mocks } from '../constants';
 import { ShoppingListContext } from '../context/shoppingListContext';
 
-const image = require("../../images/splash.jpg");
+const image = require("../../images/tempmap.png");
 
 function Shoppingprogess({ label }) {
     return (
@@ -102,7 +102,7 @@ export const MapScreen = (props) => {
             />
 
             <View style={{flex: 2}}>
-                <Image size={200} soure={image} style={styles.image}/>
+                <Image size={200} soure={image} style={{...styles.image, width: 200}}/>
             </View>
         </View>
     )
@@ -130,10 +130,10 @@ const styles = StyleSheet.create({
     },
     image: {
         flex: 2,
-        resizeMode: "cover",
-        justifyContent: "center",
+        // resizeMode: "cover",
+        // justifyContent: "center",
         marginVertical: 5,
         padding: 5,
-        backgroundColor: 'gray',
+        backgroundColor: 'red',
     }
 })
