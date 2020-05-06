@@ -1,46 +1,42 @@
-import React, { Component } from 'react';
+import React, { Component, useState, useContext } from 'react';
 import { Dimensions, Button, View, ScrollView, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Partition } from '../newstyle/Partition';
 import { Card } from '../newstyle/Card';
 import { Badge } from '../newstyle/Badge';
-import { theme, mocks } from '../constants';
+import { theme } from '../constants';
 
 import { withNavigation } from 'react-navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { ShoppingListContext } from '../context/shoppingListContext'
 
 
 const { width } = Dimensions.get("window");
 // const navigation = useNavigation();
 
-export class HomeScreen extends Component{
+export const HomeScreen = (props) => {
+    const [active, setActive] = useState('Products');
 
-    state = {
-        active: "Products",
-        // active: "Meat & Seafood",
-        categories: []
-    };
+    const { categories, shoppingListData, addShoppingListItem} = useContext(ShoppingListContext);
     
-    componentDidMount() {
-        this.setState({ categories: this.props.categories })
-    }
+    const [filteredCategories, setFilteredCategories] = useState(categories);
 
-    handleTab = tab => {
-        const { categories } = this.props;
+
+    const handleTab = tab => {
         const filtered = categories.filter(category =>
           category.tags.includes(tab.toLowerCase())
         );
     
-        this.setState({ active: tab, categories: filtered });
+        setActive(tab);
+        setFilteredCategories(filtered);
     };
     
-    renderTab(tab) {
-        const { active } = this.state;
+    const renderTab = (tab) => {
         const isActive = active === tab;
     
         return (
           <TouchableOpacity
             key={`tab-${tab}`}
-            onPress={() => this.handleTab(tab)}
+            onPress={() => handleTab(tab)}
             style={[styles.tab, isActive ? styles.active : null]}
           >
             <Text size={16} medium gray={!isActive} secondary={isActive}>
@@ -48,89 +44,74 @@ export class HomeScreen extends Component{
             </Text>
           </TouchableOpacity>
         );
-      }
+    }
 
-    render() {
-        const { navigation } = this.props;
-        const { categories } = this.state;
-        // const tabs = ["Meat & Seafood", "Produce", "Breads & Bakery", "Beverages"];
-        const tabs = ["Products", "Inspirations", "Shop"];
-        return (
+    const getItemCount = () => {
+        return (shoppingListData || []).reduce((sum, current) => {
+            return sum + current.count;
+        }, 0);
+    }
 
-            <Partition>
-                <Partition flex={false} center>
-                    <Text style={styles.header}> ITEM CATEGORIES </Text>
-                </Partition>
+    const { navigation } = props; //     const navigation = useNavigation();
+    // const { categories } = this.state;
+    // const tabs = ["Meat & Seafood", "Produce", "Breads & Bakery", "Beverages"];
+    const tabs = ["Products", "Inspirations", "Shop"];
+    return (
 
-                <Partition flex={false} style={{flexDirection: 'row-reverse'}}> 
-                    <Text style={{marginRight: 25, height: 20, width: 20, borderRadius: 10, backgroundColor: 'rgba(95,197,123,0.8)', 
-                        right: 10, bottom: 10, alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 'bold' }}>
-                       0 
-                    </Text>                   
-                    <Icon onPress={() => navigation.navigate('Shopping List')} name="ios-cart" size={30} style={{...styles.icon}}/>
-                </Partition>
+        <Partition>
+            <Partition flex={false} center>
+                <Text style={styles.header}> ITEM CATEGORIES </Text>
+            </Partition>
 
-                <Partition flex={false} row style={styles.tabs}>
-                    {tabs.map(tab => this.renderTab(tab))}
-                </Partition>
+            <Partition flex={false} style={{flexDirection: 'row-reverse'}}> 
+                <Text style={{marginRight: 25, height: 20, width: 20, borderRadius: 10, backgroundColor: 'rgba(95,197,123,0.8)', 
+                    right: 10, bottom: 10, alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 'bold', textAlign: 'center' }}>
+                    {shoppingListData.length} 
+                </Text>                   
+                <Icon onPress={() => navigation.navigate('Shopping List')} name="ios-cart" size={30} style={{...styles.icon}}/>
+            </Partition>
 
-                <ScrollView
+            <Partition flex={false} row style={styles.tabs}>
+                {tabs.map(tab => renderTab(tab))}
+            </Partition>
+
+            <ScrollView
                 showsVerticalScrollIndicator={false}
                 style={{ paddingVertical: theme.sizes.base * 2 }}
                 >
-                    <Partition flex={false} row space="between" style={styles.categories}>
-                        {categories.map(category => (
-                        <TouchableOpacity
-                            key={category.name}
-                            // onPress={() => navigation.navigate("Map", { category })}
+                <Partition flex={false} row space="between" style={styles.categories}>
+                    {filteredCategories.map(category => (
+                    <TouchableOpacity
+                        key={category.name}
+                        onPress={() => addShoppingListItem(category)}
+                    >
+                        <Card center middle shadow style={styles.category}>
+                        <Badge
+                            margin={[0, 0, 15]}
+                            size={50}
+                            color="rgba(41,216,143,0.20)"
                         >
-                            <Card center middle shadow style={styles.category}>
-                            <Badge
-                                margin={[0, 0, 15]}
-                                size={50}
-                                color="rgba(41,216,143,0.20)"
-                            >
-                                <Image source={category.image} />
-                            </Badge>
-                            <Text medium height={20}>
-                                {category.name}
-                            </Text>
-                            <Text gray caption>
-                                {category.count} products
-                            </Text>
-                            </Card>
-                        </TouchableOpacity>
-                        ))}
-                    </Partition>
-                </ScrollView>
-
-
-                <Partition flex={false} center>
-                    <Button onPress={() => navigation.navigate('Shopping List')} title = "Check your shopping list" />
+                            <Image source={category.image} />
+                        </Badge>
+                        <Text medium height={20}>
+                            {category.name}
+                        </Text>
+                        <Text gray caption>
+                            {category.count} products
+                        </Text>
+                        </Card>
+                    </TouchableOpacity>
+                    ))}
                 </Partition>
+            </ScrollView>
+
+
+            <Partition flex={false} center>
+                <Button onPress={() => navigation.navigate('Shopping List')} title = "Check your shopping list" />
             </Partition>
-
-            // <View style={styles.container}>
-            //     <Text style={styles.text}>YOUR SHOPPING LIST</Text>
-            //     {tabs.map(tab => this.renderTab(tab))}
-            //     <ScrollView
-            //         showsVerticalScrollIndicator={false}
-            //         style={{ paddingVertical: 16 * 2 }}
-            //         >
-            //     </ScrollView>
-
-            //     <Button
-            //         onPress={() => this.props.navigation.navigate('Map')}
-            //         title="Tap here to start"
-            //     />
-            // </View>
-            );
-        }
+        </Partition>
+    );
 }
-
-HomeScreen.defaultProps = {
-    categories: mocks.categories
-  };
 
 const styles = StyleSheet.create({
     container: {

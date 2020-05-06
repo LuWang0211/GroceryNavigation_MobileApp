@@ -1,14 +1,16 @@
-import React, { Component } from 'react';
+import React, { Component, useContext } from 'react';
 import {View, Button, Text, FlatList, SafeAreaView, Image, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, createNavigatorFactory } from '@react-navigation/native';
 import { mocks } from '../constants';
+import { ShoppingListContext } from '../context/shoppingListContext';
 
-function Item({ image, name }) {
+function Item({ image, name, count, onDelete }) {
     return (
       <View style={styles.item}>
         <Image size={50} source={image} />
         <Text style={{...styles.text, flex:1}}>{name}</Text>
-        <Button style={{flex:1}}title="delete"/>
+        <Text style={{...styles.text, flex:1}}>{count}</Text>
+        <Button style={{flex:1}}title="delete" onPress={onDelete} />
       </View>
     );
   }
@@ -16,6 +18,9 @@ function Item({ image, name }) {
 export const ShoppinglistScreen = (props) => {
 
     const navigation = useNavigation();
+
+    const { shoppingListData, deleteShoppingListItem } = useContext(ShoppingListContext);
+
     
     const mock_list = mocks.categories
 
@@ -25,9 +30,13 @@ export const ShoppinglistScreen = (props) => {
 
             <SafeAreaView style={{flex:100}}>
                 <FlatList 
-                    data={mock_list}
-                    renderItem={({ item }) => <Item image={item.image} name={item.name} />}
-                    keyExtractor={item => item.id}
+                    data={shoppingListData}
+                    renderItem={({item: {category, count}}) => {
+                        return <Item image={category.image} name={category.name} count={count} onDelete={() => {
+                            deleteShoppingListItem(category);
+                        }} />;
+                    }}
+                    keyExtractor={({category}) => category.id}
                 />
                 <Text style={styles.text}> {mock_list.id} </Text>
             </SafeAreaView>
@@ -58,7 +67,7 @@ header: {
 item: {
     flex: 3,
     flexDirection: "row",
-    backgroundColor: 'gray',
+    backgroundColor: 'lightgray',
     padding: 10,
     marginVertical: 1,
     marginHorizontal: 8,

@@ -7,7 +7,7 @@ import {SplashScreen} from './screens/splashscreen';
 import {HomeScreen} from './screens/homescreen';
 import {ShoppinglistScreen} from './screens/shoppinglistscreen';
 import {MapScreen} from './screens/mapscreen';
-
+import { ShoppingListContextProvider } from './context/shoppingListContext';
 // const Splash = {
 //     screen: SplashScreen,
 //     navigationOptions: {
@@ -47,14 +47,16 @@ const Drawer = createDrawerNavigator();
 
 export const AppNavigator = () => {
   return (
-    <NavigationContainer>
-      <Drawer.Navigator initialRouteName="Splash">
-        <Drawer.Screen name="Splash" component={SplashScreen} />
-        <Drawer.Screen name="Home" component={HomeScreen} />
-        <Drawer.Screen name="Shopping List" component={ShoppinglistScreen} />
-        <Drawer.Screen name="Map" component={MapScreen} />
-      </Drawer.Navigator>
-    </NavigationContainer>
+    <ShoppingListContextProvider>
+      <NavigationContainer>
+        <Drawer.Navigator initialRouteName="Splash">
+          <Drawer.Screen name="Splash" component={SplashScreen} />
+          <Drawer.Screen name="Home" component={HomeScreen} />
+          <Drawer.Screen name="Shopping List" component={ShoppinglistScreen} />
+          <Drawer.Screen name="Map" component={MapScreen} />
+        </Drawer.Navigator>
+      </NavigationContainer>
+    </ShoppingListContextProvider>
   );
 }
 
