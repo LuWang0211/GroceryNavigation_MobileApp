@@ -1,5 +1,5 @@
 import React, { Component, useContext, useState } from 'react';
-import { Button, View, Text, StyleSheet, Alert, Image, ScrollView } from 'react-native';
+import { Button, View, Text, StyleSheet, Alert, Image, ScrollView, ImageBackground } from 'react-native';
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 import { mocks } from '../constants';
 import { ShoppingListContext } from '../context/shoppingListContext';
@@ -10,10 +10,11 @@ function Shoppingprogess({ label }) {
     return (
         <View >
         <ProgressStep label={{lable}} onNext={() => Alert.alert('Please ensure that you have put the item into your cart')} removeBtnRow={false}>
-            <View style={{ alignItems: 'center' }}>
+            {/* <View style={{ alignItems: 'center' }}>
             <Text>This is the content within {{label}} </Text>
-            </View>
+            </View> */}
         </ProgressStep>
+            <Text style={{ alignItems: 'center' }}>This is the content within {{label}} </Text>
         </View>
     );
   }
@@ -47,9 +48,9 @@ export const MapScreen = (props) => {
         <View style={styles.container}  >
             <Text style={{...styles.header, minHeight:20}}>MAP</Text>
                 
-          
             <ScrollView
                 showsHorizontalScrollIndicator={true} horizontal={true}
+                automaticallyAdjustContentInsets= {true}
                 style={{ paddingLeft: 20, paddingRight: 40, flex: 1}}
             >
                 {<ProgressSteps key={'PSKEY' + shoppingListData.length} style={{flex: 1}} removeBtnRow={true} activeStep={activeStep} >
@@ -80,6 +81,7 @@ export const MapScreen = (props) => {
                                 return;
                             }
                             setActiveStep(activeStep - 1);
+                            Alert.alert('Please ensure that you have put the item into your cart');
                         }}
                         title="Previous"
                     />
@@ -90,20 +92,26 @@ export const MapScreen = (props) => {
                             return;
                         }
                         setActiveStep(activeStep + 1);
+                        Alert.alert('Please ensure that you have put the item into your cart');
                     }}
                     title="Next"
                 />
             </View>
             
+
+            <View style={{...styles.image, width: 500}}>
+                <Image source={image} style={{...styles.image}}/>
+            </View>
+
             <Button
                 // style={{flex: 1}}
                 onPress={() => Alert.alert('in process')}
-                title="Auto checkout"
+                title="Auto Navigation"
             />
 
-            <View style={{flex: 2}}>
-                <Image size={200} soure={image} style={{...styles.image, width: 200}}/>
-            </View>
+            {/* <ImageBackground size={200} source={image} style={{...styles.image, width: 500}}>
+                <Text  style={styles.text}> temp map </Text>
+            </ImageBackground> */}
         </View>
     )
 };
@@ -113,7 +121,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 6,
         flexDirection: "column",
-        backgroundColor: 'transparent'
+        justifyContent: 'center',
+        // backgroundColor: 'transparent'
     },
     header: {
         color: "black",
@@ -130,10 +139,10 @@ const styles = StyleSheet.create({
     },
     image: {
         flex: 2,
-        // resizeMode: "cover",
-        // justifyContent: "center",
+        resizeMode: "cover",
+        justifyContent: "center",
         marginVertical: 5,
         padding: 5,
-        backgroundColor: 'red',
+        backgroundColor: 'lightgray',
     }
 })
