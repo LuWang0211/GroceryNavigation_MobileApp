@@ -23,6 +23,30 @@ export const ShoppinglistScreen = (props) => {
 
     
     const mock_list = mocks.categories
+    // console.log(shoppingListData)
+
+    if (shoppingListData.length == 0) {
+        return (
+        <View style={styles.container}>
+            <Text style={{...styles.header, flex:1, minHeight:20}}> YOUR SHOPPING LIST </Text>
+
+            <Text style={{...styles.text, flex:1, minHeight:20}}> Sorry, your shopping list is empty! </Text>
+
+            <View style={{flex:2, minHeight:20, marginVertical: 10}}>
+                <Button
+                title="Continue to see the store map"
+                onPress={() => navigation.navigate('Map')}
+                />
+
+                <Button
+                title="Back to edit shopping list"
+                onPress={() => navigation.navigate('Home')}
+                />
+            </View>
+        </View>
+        )
+
+    }
 
     return (
         <View style={styles.container}>
@@ -54,7 +78,7 @@ export const ShoppinglistScreen = (props) => {
 
 const styles = StyleSheet.create({
 container: {
-    flex: 1,
+    flex: 200,
     flexDirection: "column"
 },
 header: {

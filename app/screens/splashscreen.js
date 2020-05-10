@@ -26,6 +26,7 @@ export const SplashScreen = (props) => {
             <Text  style={styles.text}>Hi, I'm your shopping assistant </Text>
 
             <Button
+              style={{width:"50%"}}
               title="Tap here to start"
               onPress={() => navigation.navigate('Home')}
             />
