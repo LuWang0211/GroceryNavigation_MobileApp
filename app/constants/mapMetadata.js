@@ -211,3 +211,55 @@ export const adjacency = {
     'AG': ['Z','AF','ZZ'],
     'ZZ': ['AG']
 }
+
+// const column = [
+//     ["AG", "Z", "T", "M", "G"],
+//     ["AE", "X", "R", "K", "E"],
+//     ["AD", "W", "Q", "J", "D"],
+//     ["AC", "V", "P", "I", "C"],
+//     ["AB", "U", "O", "H", "B"],
+//     ["AA", "N", "BB", "A"]
+// ];
+
+// for (let i = 0; i < column.length; i++) {
+//     const anchors = column[i];
+
+//     for (const anchor of anchors) {
+//         columnAssignment[anchor] = i;
+//     }
+
+// }
+
+const columnAssignment = {
+    "ZZ": 0,
+    "AG": 0,
+    "Z": 0,
+    "T": 0,
+    "M": 0,
+    "G": 0,
+    "AE": 1,
+    "X": 1,
+    "R": 1,
+    "K": 1,
+    "E": 1,
+    "AD": 2,
+    "W": 2,
+    "Q": 2,
+    "J": 2,
+    "D": 2,
+    "AC": 3,
+    "V": 3,
+    "P": 3,
+    "I": 3,
+    "C": 3,
+    "AB": 4,
+    "U": 4,
+    "O": 4,
+    "H": 4,
+    "B": 4,
+    "AA": 5,
+    "N": 5,
+    "BB": 5,
+    "A": 5
+}
+

@@ -3,6 +3,7 @@ import {View, Button, Text, FlatList, SafeAreaView, Image, StyleSheet } from 're
 import { useNavigation, createNavigatorFactory } from '@react-navigation/native';
 import { mocks } from '../constants';
 import { ShoppingListContext } from '../context/shoppingListContext';
+import { planShopping } from '../tools/mapHelper'
 
 function Item({ image, name, count, onDelete }) {
     return (
@@ -19,9 +20,10 @@ export const ShoppinglistScreen = (props) => {
 
     const navigation = useNavigation();
 
-    const { shoppingListData, deleteShoppingListItem } = useContext(ShoppingListContext);
+    let { shoppingListData, deleteShoppingListItem } = useContext(ShoppingListContext);
 
-    
+    shoppingListData = planShopping(shoppingListData);
+
     const mock_list = mocks.categories
     // console.log(shoppingListData)
 

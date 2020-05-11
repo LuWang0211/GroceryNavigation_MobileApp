@@ -23,7 +23,6 @@ export const ShoppingListContextProvider = (props) => {
         }
         dictEntry.count ++;
         
-
         setShoppingListDataDict({...shoppingListDataDict});
     }; 
 

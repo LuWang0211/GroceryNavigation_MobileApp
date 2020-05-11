@@ -1,4 +1,4 @@
-import React, { Component, useContext, useState, useRef } from 'react';
+import React, { Component, useContext, useState, useRef, useEffect } from 'react';
 import { Button, View, Text, StyleSheet, Alert, Image, ScrollView, ImageBackground } from 'react-native';
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 import { mocks } from '../constants';
@@ -6,7 +6,8 @@ import { ShoppingListContext } from '../context/shoppingListContext';
 import Svg, { Line } from 'react-native-svg';
 import { AnimatedSVGPaths } from 'react-native-svg-animations';
 import ds from '../context/d';
-import { drawLine, drawPath} from '../tools/lineHelper'
+import { drawLine, drawPath, drawPlannedPath} from '../tools/lineHelper'
+import { planShopping } from '../tools/mapHelper'
 
 const image = require("../../images/map_v1.jpg");
 
@@ -45,10 +46,15 @@ export const MapScreen = (props) => {
     const [activeStep, setActiveStep] = useState(0);
 
     const [mapWidth, setMapWidth] = useState(100);
-
     const [mapHeight, setMapHeight] = useState(100);
+    const [mapResized, setMapResized] = useState(false);
 
-    const { shoppingListData } = useContext(ShoppingListContext);
+
+    const [mapLines, setMapLines] = useState(null);
+
+    let { shoppingListData } = useContext(ShoppingListContext);
+
+    const sortedShoppingListData = planShopping(shoppingListData);
     
     const shoppingMapImage = useRef(null);
 
@@ -62,6 +68,7 @@ export const MapScreen = (props) => {
 
         setMapWidth(layout.width);
         setMapHeight(layout.height);
+        setMapResized(true);
     }
 
 
@@ -97,6 +104,19 @@ export const MapScreen = (props) => {
         )
     }
 
+    useEffect(() => {
+        if (!mapResized) {
+            return;
+        }
+
+        const goalAnchors = sortedShoppingListData.map(({category}) => category.location);
+
+        const allLines = drawPlannedPath(goalAnchors, mapWidth, mapHeight);
+
+        setMapLines(allLines);
+
+    }, [shoppingListData, mapWidth, mapHeight]);
+
     return (
         <View style={styles.container}  >
             <Text style={{...styles.header, minHeight:20}}>MAP</Text>
@@ -110,7 +130,7 @@ export const MapScreen = (props) => {
             >
                 {<ProgressSteps key={'PSKEY' + shoppingListData.length} style={{flex: 2}} removeBtnRow={true} activeStep={activeStep} >
                     {
-                        ([...shoppingListData] || []).map((entry) => {
+                        ([...sortedShoppingListData] || []).map((entry) => {
                             const { category: category_, count} = entry;
 
                             const category = {...category_};
@@ -158,8 +178,7 @@ export const MapScreen = (props) => {
             <View style={{...styles.container,flex: 5}}>
                 <ImageBackground ref={shoppingMapImage} source={image} style={{...styles.image, height: "100%"}} onLayout={ImageBackgroundOnLayout}>
                     <Svg height={mapHeight} width={mapWidth} style={{position:'absolute', top: 0}}>
-                        <Line x1="0" y1="0" x2="0" y2="10" stroke="red" strokeWidth="10" />
-                        {drawPath('ZZ', 'BB', mapWidth, mapHeight)}
+                        {mapLines}
                     </Svg>
                 </ImageBackground>
                 {/* <Image source={image} style={{...styles.image, width: "100%", height: "100%"}}/> */}
