@@ -1,16 +1,35 @@
 export const mapTemplateWidth = 648;
 export const mapTemplateHeight = 707;
 
-// const xSteps = [25, 151, 85, 85, 81, 86, 107];
+/**
+ * Code to build the following anchor positions
+ */
+
+// const xSteps = [25, 151, 85, 85, 81, 86, 102];
 // const ySteps = [116, 120, 119, 122, 136];
 
-// const layout = [
+// const layout = ['
 //     ['A', 'B', 'C', 'D', 'E', 'F', 'G'],
 //     ['BB','H','I','J','K','L','M'],
 //     ['N','O','P','Q','R','S','T'],
 //     ['_','U','V','W','X','Y','Z'],
 //     ['AA','AB','AC','AD','AE','AF','AG']
 // ]
+
+// let x = 0, y = 0;
+// for (let i = 0; i < 7; i++) {
+//     x += xSteps['i];
+//     y = 0;
+//     for (let j = 0; j < 5; j++) {
+//         y += ySteps['j];
+//         const anchor = layout['j]['i];
+
+//         anchorPositions['anchor] = {
+//             x,
+//             y
+//         }
+//     }    
+// }
 
 export const anchorPositions = {
     "A": {
@@ -130,39 +149,65 @@ export const anchorPositions = {
         "y": 613
     },
     "G": {
-        "x": 620,
+        "x": 615,
         "y": 116
     },
     "M": {
-        "x": 620,
+        "x": 615,
         "y": 236
     },
     "T": {
-        "x": 620,
+        "x": 615,
         "y": 355
     },
     "Z": {
-        "x": 620,
+        "x": 615,
         "y": 477
     },
     "AG": {
-        "x": 620,
+        "x": 615,
         "y": 613
-    }
+    },
+    "ZZ": {
+        "x": 615,
+        "y": 679
+    },
 };
 
-
-// let x = 0, y = 0;
-// for (let i = 0; i < 7; i++) {
-//     x += xSteps[i];
-//     y = 0;
-//     for (let j = 0; j < 5; j++) {
-//         y += ySteps[j];
-//         const anchor = layout[j][i];
-
-//         anchorPositions[anchor] = {
-//             x,
-//             y
-//         }
-//     }    
-// }
+export const adjacency = {
+    'A': ['B', 'BB'],
+    'B': ['A','C','H'],
+    'C': ['B','D','I'],
+    'D': ['C','J','E'],
+    'E': ['D','K','F'],
+    'F': ['E','L','G'],
+    'G': ['F','M'],
+    'BB': ['A','N'],
+    'H': ['B','O'],
+    'I': ['C','P'],
+    'J': ['D','Q'],
+    'K': ['E','R'],
+    'L': ['F','S'],
+    'M': ['G','T'],
+    'N': ['BB','O','AA'],
+    'O': ['H','N','P','U'],
+    'P': ['I','O','Q','V'],
+    'Q': ['J','P','R','W'],
+    'R': ['K','Q','S','X'],
+    'S': ['L','R','T','Y'],
+    'T': ['M','S','Z'],
+    'U': ['O','AB'],
+    'V': ['P','AC'],
+    'W': ['Q','AD'],
+    'X': ['R','AE'],
+    'Y': ['S','AF'],
+    'Z': ['T','AG'],
+    'AA': ['N', 'AB'],
+    'AB': ['AA','U','AC'],
+    'AC': ['V','AB','AD'],
+    'AD': ['W','AC','AE'],
+    'AE': ['X','AD','AF'],
+    'AF': ['AE','Y','AG'],
+    'AG': ['Z','AF','ZZ'],
+    'ZZ': ['AG']
+}

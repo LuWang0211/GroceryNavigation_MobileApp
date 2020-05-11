@@ -6,7 +6,7 @@ import { ShoppingListContext } from '../context/shoppingListContext';
 import Svg, { Line } from 'react-native-svg';
 import { AnimatedSVGPaths } from 'react-native-svg-animations';
 import ds from '../context/d';
-import { drawLine} from '../tools/lineHelper'
+import { drawLine, drawPath} from '../tools/lineHelper'
 
 const image = require("../../images/map_v1.jpg");
 
@@ -65,7 +65,7 @@ export const MapScreen = (props) => {
     }
 
 
-    const path = "M24.3 30C11.4 30 5 43.3 5 50s6.4 20 19.3 20c19.3 0 32.1-40 51.4-40 C88.6 30 95 43.3 95 50s-6.4 20-19.3 20C56.4 70 43.6 30 24.3 30z";
+    // const path = "M24.3 30C11.4 30 5 43.3 5 50s6.4 20 19.3 20c19.3 0 32.1-40 51.4-40 C88.6 30 95 43.3 95 50s-6.4 20-19.3 20C56.4 70 43.6 30 24.3 30z";
 
     if (shoppingListData.length == 0) {
         return (
@@ -159,7 +159,7 @@ export const MapScreen = (props) => {
                 <ImageBackground ref={shoppingMapImage} source={image} style={{...styles.image, height: "100%"}} onLayout={ImageBackgroundOnLayout}>
                     <Svg height={mapHeight} width={mapWidth} style={{position:'absolute', top: 0}}>
                         <Line x1="0" y1="0" x2="0" y2="10" stroke="red" strokeWidth="10" />
-                        {drawLine('R', 'X', mapWidth, mapHeight)}
+                        {drawPath('ZZ', 'BB', mapWidth, mapHeight)}
                     </Svg>
                 </ImageBackground>
                 {/* <Image source={image} style={{...styles.image, width: "100%", height: "100%"}}/> */}

@@ -1,10 +1,10 @@
-const categories = [
+const categories_old = [
   {
     id: 'plants',
     name: 'Plants',
     tags: ['products', 'inspirations'],
     count: 147,
-    image: require('../assets/icons/plants.png')
+    image: require('../assets/icons/plants.png'),
   },
   {
     id: 'seeds',
@@ -54,6 +54,73 @@ const categories = [
     tags: ['products', 'shop'],
     count: 47,
     image: require('../assets/icons/fertilizers.png')
+  },
+];
+
+const categories = [
+  {
+    id: 'personal_care',
+    name: 'Personal Care',
+    tags: ['products', 'inspirations'],
+    count: 147,
+    image: require('../assets/icons/plants.png'),
+    location: 'U'
+  },
+  {
+    id: 'hair_care',
+    name: 'Hair Care',
+    tags: ['products', 'shop'],
+    count: 16,
+    image: require('../assets/icons/seeds.png'),
+    location: 'V'
+  },
+  {
+    id: 'pharmacy',
+    name: 'Pharmacy',
+    tags: ['products', 'inspirations'],
+    count: 68,
+    image: require('../assets/icons/flowers.png'),
+    location: 'W'
+  },
+  {
+    id: 'local',
+    name: 'Local',
+    tags: ['products', 'shop'],
+    count: 17,
+    image: require('../assets/icons/sprayers.png'),
+    location: 'X'
+  },
+  {
+    id: 'candy',
+    name: 'Candies',
+    tags: ['products', 'shop'],
+    count: 47,
+    image: require('../assets/icons/pots.png'),
+    location: 'Y'
+  },
+  {
+    id: 'organic',
+    name: 'Organic',
+    tags: ['products', 'shop'],
+    count: 47,
+    image: require('../assets/icons/fertilizers.png'),
+    location: 'Z'
+  },
+  {
+    id: 'bread',
+    name: 'Bread',
+    tags: ['products', 'shop'],
+    count: 47,
+    image: require('../assets/icons/fertilizers.png'),
+    location: 'H'
+  },
+  {
+    id: 'frozen',
+    name: 'Icecream',
+    tags: ['products', 'shop'],
+    count: 47,
+    image: require('../assets/icons/fertilizers.png'),
+    location: 'I'
   },
 ];
 
