@@ -97,7 +97,7 @@ export const HomeScreen = (props) => {
                             {category.name}
                         </Text>
                         <Text gray caption>
-                            {category.count} products
+                            price: $ {category.count}
                         </Text>
                         </Card>
                     </TouchableOpacity>

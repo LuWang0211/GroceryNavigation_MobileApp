@@ -62,7 +62,7 @@ const categories = [
     id: 'personal_care',
     name: 'Personal Care',
     tags: ['products', 'inspirations'],
-    count: 147,
+    count: 25.7,
     image: require('../assets/icons/plants.png'),
     location: 'U'
   },
@@ -70,7 +70,7 @@ const categories = [
     id: 'hair_care',
     name: 'Hair Care',
     tags: ['products', 'shop'],
-    count: 16,
+    count: 17.9,
     image: require('../assets/icons/seeds.png'),
     location: 'V'
   },
@@ -86,7 +86,7 @@ const categories = [
     id: 'local',
     name: 'Local',
     tags: ['products', 'shop'],
-    count: 17,
+    count: 5,
     image: require('../assets/icons/sprayers.png'),
     location: 'X'
   },
@@ -94,7 +94,7 @@ const categories = [
     id: 'candy',
     name: 'Candies',
     tags: ['products', 'shop'],
-    count: 47,
+    count: 4.6,
     image: require('../assets/icons/pots.png'),
     location: 'Y'
   },
@@ -102,7 +102,7 @@ const categories = [
     id: 'organic',
     name: 'Organic',
     tags: ['products', 'shop'],
-    count: 47,
+    count: 2.1,
     image: require('../assets/icons/fertilizers.png'),
     location: 'Z'
   },
@@ -110,7 +110,7 @@ const categories = [
     id: 'bread',
     name: 'Bread',
     tags: ['products', 'shop'],
-    count: 47,
+    count: 5.3,
     image: require('../assets/icons/fertilizers.png'),
     location: 'H'
   },
@@ -118,7 +118,7 @@ const categories = [
     id: 'frozen',
     name: 'Icecream',
     tags: ['products', 'shop'],
-    count: 47,
+    count: 14.5,
     image: require('../assets/icons/fertilizers.png'),
     location: 'I'
   },

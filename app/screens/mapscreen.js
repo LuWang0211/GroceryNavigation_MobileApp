@@ -1,13 +1,15 @@
 import React, { Component, useContext, useState, useRef, useEffect } from 'react';
 import { Button, View, Text, StyleSheet, Alert, Image, ScrollView, ImageBackground } from 'react-native';
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
+import Geolocation from 'react-native-geolocation-service';
+import Svg, {Circle} from 'react-native-svg';
+
 import { mocks } from '../constants';
 import { ShoppingListContext } from '../context/shoppingListContext';
-import Svg, { Line } from 'react-native-svg';
-import { AnimatedSVGPaths } from 'react-native-svg-animations';
-import ds from '../context/d';
-import { drawLine, drawPath, drawPlannedPath} from '../tools/lineHelper'
-import { planShopping } from '../tools/mapHelper'
+import { drawPlannedPath, iconPositions } from '../tools/lineHelper';
+import { planShopping } from '../tools/mapHelper';
+import { ensurePermission } from '../tools/permissionHelper';
+
 
 const image = require("../../images/map_v1.jpg");
 
@@ -49,8 +51,9 @@ export const MapScreen = (props) => {
     const [mapHeight, setMapHeight] = useState(100);
     const [mapResized, setMapResized] = useState(false);
 
-
     const [mapLines, setMapLines] = useState(null);
+
+    const [isPermissionChecked, setIsPermissionChecked] = useState(false);
 
     let { shoppingListData } = useContext(ShoppingListContext);
 
@@ -58,13 +61,17 @@ export const MapScreen = (props) => {
     
     const shoppingMapImage = useRef(null);
 
-    console.log('shoppingMapImage', shoppingMapImage.current);
+    const [iconCur, setIconPosition] = useState(null);
+
+    let pre_position = [];
+
+    // console.log('shoppingMapImage', shoppingMapImage.current);
 
     window.shoppingMapImage = shoppingMapImage;
 
     const ImageBackgroundOnLayout = (event) => {
         const layout = event.nativeEvent.layout;
-        console.log(event.nativeEvent.layout);
+        // console.log(event.nativeEvent.layout);
 
         setMapWidth(layout.width);
         setMapHeight(layout.height);
@@ -80,31 +87,28 @@ export const MapScreen = (props) => {
                 <Text style={{...styles.header, minHeight:20}}>MAP</Text>
                 <Text style={{...styles.text}}>You do not have shopping list yet. You can view the map without navigation </Text>
                 <View style={{...styles.container,flex: 5}}>
-                    {/* <Image source={image} style={{...styles.image, width: "100%", height: "100%"}}/> */}
                     <ImageBackground source={image} style={{...styles.image, height: "80%"}}>
-                        <Svg height="100" width="100">
-                            <Line x1="0" y1="0" x2="0" y2="10" stroke="red" strokeWidth="10" />
-                        </Svg>
                     </ImageBackground>
-
-                    {/* <AnimatedSVGPaths
-                        strokeColor={"green"}
-                        duration={500}
-                        strokeWidth={10}
-                        strokeDashArray = {[42.76482137044271, 42.76482137044271]}
-                        height={400}
-                        width={400}
-                        scale={0.75}
-                        delay={100}
-                        d={path}
-                        loop={false}
-                    /> */}
                 </View>
             </View>
         )
     }
 
     useEffect(() => {
+        async function getPermission() {
+            if (isPermissionChecked) {
+                return;
+            }
+            const granted = await ensurePermission();
+            if (granted) {
+                setIsPermissionChecked(true);
+            }
+        }
+        getPermission();
+
+    }, [shoppingListData]);
+
+    useEffect(() => {        
         if (!mapResized) {
             return;
         }
@@ -113,9 +117,53 @@ export const MapScreen = (props) => {
 
         const allLines = drawPlannedPath(goalAnchors, mapWidth, mapHeight);
 
+        let icons = iconPositions('X', mapWidth, mapHeight);
+
         setMapLines(allLines);
 
+        setIconPosition(icons);
+
     }, [shoppingListData, mapWidth, mapHeight]);
+
+    
+    useEffect(() => {
+        console.log('isPermissionChecked', isPermissionChecked);
+        if (!isPermissionChecked) {
+            return;
+        }
+
+        // const watchId = Geolocation.watchPosition((info) => {
+        //     console.log('callback', info);
+        //     console.log('callback', `${info.coords.latitude} , ${info.coords.longitude}`);
+        // },
+        // (error)=> {
+        //     console.log('error', error);
+        //   }, 
+        // {enableHighAccuracy: true, forceRequestLocation: true, interval: 200, fastestInterval: 100});
+        
+        const interval = setInterval(() => {
+        //   console.log('Geo location!');
+          Geolocation.getCurrentPosition(info => {
+            //   console.log('callback', info);
+            //   console.log('callback', `${info.coords.latitude} , ${info.coords.longitude}`);
+              let cur_position = [info.coords.latitude, info.coords.longitude];
+            //   console.log('pre_position', `${pre_position}`);
+            //   console.log('cur_position', `${cur_position}`);
+
+              if ( cur_position !== pre_position) {
+                let pre_position = {...cur_position}
+                // console.log('position changed');
+              }
+
+
+          }, (error)=> {
+            console.log('error', error);
+          }, {enableHighAccuracy: true, forceRequestLocation: true, distanceFilter: 5});
+        }, 500);
+        return () => clearInterval(interval);
+
+        // return () => Geolocation.clearWatch(watchId);
+    }, [isPermissionChecked]);
 
     return (
         <View style={styles.container}  >
@@ -140,7 +188,6 @@ export const MapScreen = (props) => {
                                 removeBtnRow={true}
                                 >
                                 <Text>{category.name}</Text>
-                                {/* </View> */}
                             </ProgressStep>);
                         })
                     }
@@ -179,9 +226,10 @@ export const MapScreen = (props) => {
                 <ImageBackground ref={shoppingMapImage} source={image} style={{...styles.image, height: "100%"}} onLayout={ImageBackgroundOnLayout}>
                     <Svg height={mapHeight} width={mapWidth} style={{position:'absolute', top: 0}}>
                         {mapLines}
+                        {/* <Circle cx="50" cy="50" r="5" fill="red" /> */}
                     </Svg>
+                    {iconCur}
                 </ImageBackground>
-                {/* <Image source={image} style={{...styles.image, width: "100%", height: "100%"}}/> */}
             </View>
 
             <Button
@@ -224,5 +272,10 @@ const styles = StyleSheet.create({
         marginVertical: 2,
         padding: 2,
         backgroundColor: 'lightgray',
-    }
+    },
+    icon: {
+        // marginHorizontal: 32,
+        textAlign: "right",
+        justifyContent: "flex-start"
+    },
 })

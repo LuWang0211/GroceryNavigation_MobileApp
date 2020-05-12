@@ -3,6 +3,7 @@ import React from 'react';
 import { anchorPositions, mapTemplateWidth, mapTemplateHeight } from '../constants/mapMetadata';
 import { findShortestPath } from '../tools/mapHelper'
 import { Line } from 'react-native-svg';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 
 export const drawLine = (startAnchor, endAnchor, referenceWidth, referenceHeight, key = "linekey") => {
@@ -19,7 +20,7 @@ export const drawLine = (startAnchor, endAnchor, referenceWidth, referenceHeight
     const xEndRef = endX / mapTemplateWidth * referenceWidth;
     const yEndRef = endY / mapTemplateHeight * referenceHeight;
 
-    return <Line key={key} x1={xStartRef} y1={yStartRef} x2={xEndRef} y2={yEndRef} stroke="red" strokeWidth="10" />;
+    return <Line key={key} x1={xStartRef} y1={yStartRef} x2={xEndRef} y2={yEndRef} stroke="red" strokeWidth="3" />;
 }
 
 export const drawPath = (startAnchor, endAnchor, referenceWidth, referenceHeight, keyPrefix = 'key') => {
@@ -60,4 +61,19 @@ export const drawPlannedPath = (goalAnchors, referenceWidth, referenceHeight, st
     }
 
     return allPath;
+}
+
+export const iconPositions = (iconAnchor, referenceWidth, referenceHeight) => {
+    if (!anchorPositions[iconAnchor]) {
+        throw new Error("I haven't seen this icon anchor before");
+    }
+
+    const {x: startX, y: startY} = anchorPositions[iconAnchor];
+
+    const xStartRef = startX / mapTemplateWidth * referenceWidth;
+    const yStartRef = startY / mapTemplateHeight * referenceHeight;
+
+    console.log('xStartRef, yStartRef',xStartRef, yStartRef)
+
+    return <Icon name="md-person" size={24} style={{top: yStartRef - 12 , left: xStartRef - 12, position:"absolute"}}/>;
 }
