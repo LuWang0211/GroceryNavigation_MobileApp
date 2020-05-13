@@ -79,6 +79,8 @@ target 'GroceryNavigation_MobileApp' do
 
   pod 'react-native-camera', :path => '../node_modules/react-native-camera'
 
+  pod 'RNTextDetector', :path => '../node_modules/react-native-text-detector'
+
   target 'GroceryNavigation_MobileAppTests' do
     inherit! :complete
     # Pods for testing

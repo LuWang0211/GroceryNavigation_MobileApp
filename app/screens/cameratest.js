@@ -1,7 +1,8 @@
 
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Component, useCallback, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { RNCamera } from 'react-native-camera';
+import RNTextDetector from 'react-native-text-detector';
 
 const PendingView = () => (
   <View
@@ -16,50 +17,65 @@ const PendingView = () => (
   </View>
 );
 
-export class CameraTest extends PureComponent {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={{...styles.header, minHeight:20}}> Camera Test </Text>
-        <RNCamera
-          style={styles.preview}
-          type={RNCamera.Constants.Type.back}
-          flashMode={RNCamera.Constants.FlashMode.on}
-          androidCameraPermissionOptions={{
-            title: 'Permission to use camera',
-            message: 'We need your permission to use your camera',
-            buttonPositive: 'Ok',
-            buttonNegative: 'Cancel',
-          }}
-          androidRecordAudioPermissionOptions={{
-            title: 'Permission to use audio recording',
-            message: 'We need your permission to use your audio',
-            buttonPositive: 'Ok',
-            buttonNegative: 'Cancel',
-          }}
-        >
-          {({ camera, status, recordAudioPermissionStatus }) => {
-            if (status !== 'READY') return <PendingView />;
-            return (
-              <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center' }}>
-                <TouchableOpacity onPress={() => this.takePicture(camera)} style={styles.capture}>
-                  <Text style={{ fontSize: 14 }}> Snap </Text>
-                </TouchableOpacity>
-              </View>
-            );
-          }}
-        </RNCamera>
-      </View>
-    );
-  }
+export const CameraTest = () => {
 
-  takePicture = async function(camera) {
-    const options = { quality: 0.5, base64: true };
+  const [detection, setDetection] = useState('No Detection')
+
+  const takePicture = async function(camera) {
+    console.log('take picture');
+    const options = { quality: 0.5, base64: true, skipProcessing: true };
     const data = await camera.takePictureAsync(options);
     //  eslint-disable-next-line
-    console.log(data.uri);
+    console.log(data );
+
+    const result = await RNTextDetector.detectFromUri(data.uri);
+
+    console.log('detection', result);
+
+    setDetection(result.map(e => e.text).join(" - "));
   };
+
+  const onTextRecognized = (response) => {
+    console.log('onTextRecognized', response);
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={{...styles.header, minHeight:20}}> Camera Test </Text>
+      <Text style={{...styles.text}}> {detection} </Text>
+      <RNCamera
+        style={styles.preview}
+        type={RNCamera.Constants.Type.back}
+        flashMode={RNCamera.Constants.FlashMode.off}
+        androidCameraPermissionOptions={{
+          title: 'Permission to use camera',
+          message: 'We need your permission to use your camera',
+          buttonPositive: 'Ok',
+          buttonNegative: 'Cancel',
+        }}
+        androidRecordAudioPermissionOptions={{
+          title: 'Permission to use audio recording',
+          message: 'We need your permission to use your audio',
+          buttonPositive: 'Ok',
+          buttonNegative: 'Cancel',
+        }}
+      >
+        {({ camera, status, recordAudioPermissionStatus }) => {
+          if (status !== 'READY') return <PendingView />;
+          return (
+            <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center' }}>
+              <TouchableOpacity onPress={() => takePicture(camera)} style={styles.capture}>
+                <Text style={{ fontSize: 14 }}> Snap </Text>
+              </TouchableOpacity>
+                
+            </View>
+          );
+        }}
+      </RNCamera>
+    </View>
+  );
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -87,5 +103,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     alignSelf: 'center',
     margin: 20,
+  },
+  textContainer: {
+    position: 'absolute',
+    top: 100,
+    left: 50,
+  },
+  text: {
+    textAlign: 'center',
+    fontSize: 20,
   },
 });

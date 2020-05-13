@@ -149,13 +149,10 @@ export const MapScreen = (props) => {
               let cur_position = [info.coords.latitude, info.coords.longitude];
             //   console.log('pre_position', `${pre_position}`);
             //   console.log('cur_position', `${cur_position}`);
-
               if ( cur_position !== pre_position) {
                 let pre_position = {...cur_position}
                 // console.log('position changed');
               }
-
-
           }, (error)=> {
             console.log('error', error);
           }, {enableHighAccuracy: true, forceRequestLocation: true, distanceFilter: 5});
@@ -234,8 +231,10 @@ export const MapScreen = (props) => {
 
             <Button
                 // style={{flex: 1}}
-                onPress={() => Alert.alert('in process')}
-                title="Auto Navigation"
+                // onPress={() => Alert.alert('in process')}
+                // title="Auto Navigation"
+                onpress={() => navigation.navigate('CameraTest')}
+                title="Check Camera Detection"
             />
 
             {/* <ImageBackground size={200} source={image} style={{...styles.image, width: 500}}>
