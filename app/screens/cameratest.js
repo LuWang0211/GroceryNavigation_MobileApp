@@ -26,13 +26,34 @@ export const CameraTest = () => {
     const options = { quality: 0.5, base64: true, skipProcessing: true };
     const data = await camera.takePictureAsync(options);
     //  eslint-disable-next-line
-    console.log(data );
+    console.log(data.uri );
 
     const result = await RNTextDetector.detectFromUri(data.uri);
 
-    console.log('detection', result);
+    console.log('detection, origianl result', result);
 
     setDetection(result.map(e => e.text).join(" - "));
+
+    // console.log('reset result text', detection);
+
+    const AisleNo1 = new Set(['1', 'hispanic foods', 'can prepared', 'pckgd. dinners', 'pckgd.', 'pasta', 'condiments', 'condiments']);
+    const AisleNo2 = new Set(['2', 'food storage', 'spices', 'peanut butter', 'cake mixes', 'soups', 'canned fruit']);
+
+    let detectionlist = detection.split(" - ");
+
+    for (let i = 0; i < detectionlist.length; i++) {
+      // console.log('test: ', detectionlist[i], detectionlist[i] in AisleNo1);
+      if ( AisleNo1.has(detectionlist[i])) {
+        console.log('You are in Aisle One');
+        break;
+      }
+
+      if ( AisleNo2.has(detectionlist[i])) {
+        console.log('You are in Aisle Two');
+        break;
+      }
+
+    }
   };
 
   const onTextRecognized = (response) => {
