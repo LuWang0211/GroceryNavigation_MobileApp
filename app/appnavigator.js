@@ -8,7 +8,8 @@ import {ShoppinglistScreen} from './screens/shoppinglistscreen';
 import {MapScreen} from './screens/mapscreen';
 import { ShoppingListContextProvider } from './context/shoppingListContext';
 import { MapTest } from './screens/maptest';
-import { CameraTest } from './screens/cameratest'
+import { CameraTest } from './screens/cameratest';
+import { BeaconTest } from './screens/beacontest';
 
 const Drawer = createDrawerNavigator();
 
@@ -23,6 +24,7 @@ export const AppNavigator = () => {
           <Drawer.Screen name="Map" component={MapScreen} />
           <Drawer.Screen name="MapTest" component={MapTest} />
           <Drawer.Screen name="CameraTest" component={CameraTest} />
+          <Drawer.Screen name="BeaconTest" component={BeaconTest} />
         </Drawer.Navigator>
       </NavigationContainer>
     </ShoppingListContextProvider>
