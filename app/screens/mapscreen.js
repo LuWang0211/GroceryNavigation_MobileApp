@@ -1,5 +1,5 @@
 import React, { Component, useContext, useState, useRef, useEffect } from 'react';
-import { Button, View, Text, StyleSheet, Alert, Image, ScrollView, ImageBackground } from 'react-native';
+import { Button, View, Text, StyleSheet, Alert, Image, ScrollView, ImageBackground, TouchableOpacity } from 'react-native';
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 import Geolocation from 'react-native-geolocation-service';
 import Svg, {Circle} from 'react-native-svg';
@@ -9,6 +9,8 @@ import { ShoppingListContext } from '../context/shoppingListContext';
 import { drawPlannedPath, iconPositions } from '../tools/lineHelper';
 import { planShopping } from '../tools/mapHelper';
 import { ensurePermission } from '../tools/permissionHelper';
+import { useNavigation } from '@react-navigation/native';
+import { SmallCamera } from './camera';
 
 
 const image = require("../../images/map_v1.jpg");
@@ -44,6 +46,7 @@ export const MapScreen = (props) => {
     //       setState({ errors: false });
     //     }
     // };
+    const navigation = useNavigation();
 
     const [activeStep, setActiveStep] = useState(0);
 
@@ -55,7 +58,7 @@ export const MapScreen = (props) => {
 
     const [isPermissionChecked, setIsPermissionChecked] = useState(false);
 
-    let { shoppingListData } = useContext(ShoppingListContext);
+    let { shoppingListData, location } = useContext(ShoppingListContext);
 
     const sortedShoppingListData = planShopping(shoppingListData);
     
@@ -71,7 +74,7 @@ export const MapScreen = (props) => {
 
     const ImageBackgroundOnLayout = (event) => {
         const layout = event.nativeEvent.layout;
-        // console.log(event.nativeEvent.layout);
+        console.log(event.nativeEvent.layout);
 
         setMapWidth(layout.width);
         setMapHeight(layout.height);
@@ -117,13 +120,16 @@ export const MapScreen = (props) => {
 
         const allLines = drawPlannedPath(goalAnchors, mapWidth, mapHeight);
 
-        let icons = iconPositions('X', mapWidth, mapHeight);
-
         setMapLines(allLines);
 
-        setIconPosition(icons);
-
     }, [shoppingListData, mapWidth, mapHeight]);
+
+    useEffect(() => {
+        if (!!location) {
+            let icons = iconPositions(location, mapWidth, mapHeight);
+            setIconPosition(icons);
+        }
+    }, [mapWidth, mapHeight, location])
 
     
     useEffect(() => {
@@ -173,6 +179,17 @@ export const MapScreen = (props) => {
 
                 
             >
+
+                <TouchableOpacity 
+                    onPress={() => {
+                        if (activeStep == shoppingListData.length - 1) {
+                            return;
+                        }
+                        setActiveStep(activeStep + 1);
+                        Alert.alert('Please ensure that you have put the item into your cart');
+                    }}>
+                    <Text style={{ width: '10%', color: "white"}}> next </Text>
+                </TouchableOpacity>
                 {<ProgressSteps key={'PSKEY' + shoppingListData.length} style={{flex: 2}} removeBtnRow={true} activeStep={activeStep} >
                     {
                         ([...sortedShoppingListData] || []).map((entry) => {
@@ -194,7 +211,7 @@ export const MapScreen = (props) => {
             </ScrollView>
 
             <View style={{flexDirection: 'row', justifyContent: 'space-around', marginBottom: 10}}>
-                <Button
+                {/* <Button
                         style={{ width: '40%'}}
                         onPress={() => {
                             if (activeStep == 0) {
@@ -215,12 +232,13 @@ export const MapScreen = (props) => {
                         Alert.alert('Please ensure that you have put the item into your cart');
                     }}
                     title="Next"
-                />
+                /> */}
+
             </View>
             
 
             <View style={{...styles.container,flex: 5}}>
-                <ImageBackground ref={shoppingMapImage} source={image} style={{...styles.image, height: "100%"}} onLayout={ImageBackgroundOnLayout}>
+                <ImageBackground ref={shoppingMapImage} source={image} style={{...styles.image}} onLayout={ImageBackgroundOnLayout}>
                     <Svg height={mapHeight} width={mapWidth} style={{position:'absolute', top: 0}}>
                         {mapLines}
                         {/* <Circle cx="50" cy="50" r="5" fill="red" /> */}
@@ -229,12 +247,14 @@ export const MapScreen = (props) => {
                 </ImageBackground>
             </View>
 
+            <SmallCamera />
+
             <Button
                 // style={{flex: 1}}
                 // onPress={() => Alert.alert('in process')}
                 // title="Auto Navigation"
-                onpress={() => navigation.navigate('CameraTest')}
-                title="Check Camera Detection"
+                onPress={() => navigation.navigate('CameraTest')}
+                title="See Camera Detection (For Demo)"
             />
 
             {/* <ImageBackground size={200} source={image} style={{...styles.image, width: 500}}>

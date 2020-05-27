@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { anchorPositions, adjacency } from '../constants/mapMetadata'
+import { anchorPositions, adjacency, wordsToLocation } from '../constants/mapMetadata'
 
 /**
  * Given start and end nodes, calculate the shortest path bettwen start and end. 
@@ -77,4 +77,17 @@ export const planShopping = (shoppingList) => {
     // console.log(toSort.map( e => e.shoppingListEntry));
 
     return toSort.map( e => e.shoppingListEntry);
+}
+
+export const localize = (textCapture) => {
+
+    for (const component of textCapture.components) {
+        const word  = (component.text || '').trim().toLowerCase();
+
+        if (!!wordsToLocation[word]) { // !! means to get the actual boolean value of the expression
+            return wordsToLocation[word];
+        }
+    }
+
+    return null;
 }

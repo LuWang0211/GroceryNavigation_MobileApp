@@ -1,8 +1,8 @@
 
-import React, { PureComponent, Component, useCallback, useState } from 'react';
+import React, { PureComponent, Component, useCallback, useState, useContext } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { RNCamera } from 'react-native-camera';
-import RNTextDetector from 'react-native-text-detector';
+import { ShoppingListContext} from '../context/shoppingListContext'
 
 const PendingView = () => (
   <View
@@ -17,9 +17,20 @@ const PendingView = () => (
   </View>
 );
 
+export class TextCaptureComponent {
+  bounds;
+  text;
+}
+
+export class TextCapture {
+  components = []
+}
+
 export const CameraTest = () => {
 
-  const [detection, setDetection] = useState('No Detection')
+  const [detection, setDetection] = useState('No Detection');
+
+  const { reportTextCapture } = useContext(ShoppingListContext);
 
   const takePicture = async function(camera) {
     console.log('take picture');
@@ -28,11 +39,11 @@ export const CameraTest = () => {
     //  eslint-disable-next-line
     console.log(data.uri );
 
-    const result = await RNTextDetector.detectFromUri(data.uri);
+    // const result = await RNTextDetector.detectFromUri(data.uri);
 
-    console.log('detection, origianl result', result);
+    // console.log('detection, origianl result', result);
 
-    setDetection(result.map(e => e.text).join(" - "));
+    // setDetection(result.map(e => e.text).join(" - "));
 
     // console.log('reset result text', detection);
 
@@ -56,8 +67,21 @@ export const CameraTest = () => {
     }
   };
 
-  const onTextRecognized = (response) => {
-    console.log('onTextRecognized', response);
+  const onTextRecognized = ({ textBlocks }) => {
+    const textCapture = new TextCapture();
+
+    for (const textBlock of textBlocks) {
+      const components = textBlock.components;
+
+      for (const component of components) {
+        const textCaptureBlock = new TextCaptureComponent();
+        textCaptureBlock.bounds = component.bounds;
+        textCaptureBlock.text = component.value;
+        textCapture.components.push(textCaptureBlock);        
+      }
+    }
+    
+    reportTextCapture(textCapture);
   };
 
   return (
@@ -80,6 +104,7 @@ export const CameraTest = () => {
           buttonPositive: 'Ok',
           buttonNegative: 'Cancel',
         }}
+        onTextRecognized={onTextRecognized}
       >
         {({ camera, status, recordAudioPermissionStatus }) => {
           if (status !== 'READY') return <PendingView />;
@@ -88,7 +113,6 @@ export const CameraTest = () => {
               <TouchableOpacity onPress={() => takePicture(camera)} style={styles.capture}>
                 <Text style={{ fontSize: 14 }}> Snap </Text>
               </TouchableOpacity>
-                
             </View>
           );
         }}

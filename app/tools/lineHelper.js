@@ -57,7 +57,7 @@ export const drawPlannedPath = (goalAnchors, referenceWidth, referenceHeight, st
 
         start = nextGoal;
 
-        console.log('drawPlannedPath', start, nextGoal);
+        // console.log('drawPlannedPath', start, nextGoal);
     }
 
     return allPath;

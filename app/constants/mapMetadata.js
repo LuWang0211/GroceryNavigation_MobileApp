@@ -263,3 +263,42 @@ const columnAssignment = {
     "A": 5
 }
 
+const locationKeywordsDef = [
+    [
+        ['AG'], ['1', 'hispanic foods', 'can prepared', 'pckgd. dinners', 'pckgd.', 'pasta', 'condiments', 'condiments']
+    ],
+    [
+        ['T'], ['2', 'food storage', 'spices', 'peanut butter', 'cake mixes', 'soups', 'canned fruit', 'w']
+    ],
+    [
+        ['G'], ['eggs and dairy', 'eggs', 'dairy']
+    ],
+    [
+        ['E'], ['meat']
+    ],
+    [
+        ['B'], ['seafood']
+    ],
+    [
+        ['AF'], ['candies']
+    ],
+    [
+        ['AE'], ['local']
+    ],
+    [
+        ['R'], ['breakfast']
+    ],
+]
+
+export const wordsToLocation = {
+}
+
+for (const group of locationKeywordsDef) {
+    const [locs, words] = group;
+
+    for (const loc of locs) {
+        for (const word of words) {
+            wordsToLocation[word] = loc;
+        }
+    }
+}
