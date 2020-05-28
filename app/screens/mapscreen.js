@@ -6,7 +6,7 @@ import Svg, {Circle} from 'react-native-svg';
 
 import { mocks } from '../constants';
 import { ShoppingListContext } from '../context/shoppingListContext';
-import { drawPlannedPath, iconPositions } from '../tools/lineHelper';
+import { drawPath, drawPlannedPath, iconPositions } from '../tools/lineHelper';
 import { planShopping } from '../tools/mapHelper';
 import { ensurePermission } from '../tools/permissionHelper';
 import { useNavigation } from '@react-navigation/native';
@@ -118,11 +118,18 @@ export const MapScreen = (props) => {
 
         const goalAnchors = sortedShoppingListData.map(({category}) => category.location);
 
-        const allLines = drawPlannedPath(goalAnchors, mapWidth, mapHeight);
+        if (goalAnchors.length > activeStep) {
+            const nextgoalAnchor = goalAnchors[activeStep];
+            // const allLines = drawPlannedPath(goalAnchors, mapWidth, mapHeight);
 
-        setMapLines(allLines);
+            // const linesToNextStep = drawPath(location, nextgoalAnchor, mapWidth, mapHeight);
+            const futureSteps = goalAnchors.slice(activeStep);
+            const linesFuture = drawPlannedPath(futureSteps, mapWidth, mapHeight, location, '#669df6');
+            const linesCurrentStepToComplete = drawPlannedPath(goalAnchors, mapWidth, mapHeight);
+            setMapLines(linesCurrentStepToComplete.concat(linesFuture));
+        }
 
-    }, [shoppingListData, mapWidth, mapHeight]);
+    }, [shoppingListData, mapWidth, mapHeight, location, activeStep]);
 
     useEffect(() => {
         if (!!location) {
@@ -137,35 +144,6 @@ export const MapScreen = (props) => {
         if (!isPermissionChecked) {
             return;
         }
-
-        // const watchId = Geolocation.watchPosition((info) => {
-        //     console.log('callback', info);
-        //     console.log('callback', `${info.coords.latitude} , ${info.coords.longitude}`);
-        // },
-        // (error)=> {
-        //     console.log('error', error);
-        //   }, 
-        // {enableHighAccuracy: true, forceRequestLocation: true, interval: 200, fastestInterval: 100});
-        
-        const interval = setInterval(() => {
-        //   console.log('Geo location!');
-          Geolocation.getCurrentPosition(info => {
-            //   console.log('callback', info);
-            //   console.log('callback', `${info.coords.latitude} , ${info.coords.longitude}`);
-              let cur_position = [info.coords.latitude, info.coords.longitude];
-            //   console.log('pre_position', `${pre_position}`);
-            //   console.log('cur_position', `${cur_position}`);
-              if ( cur_position !== pre_position) {
-                let pre_position = {...cur_position}
-                // console.log('position changed');
-              }
-          }, (error)=> {
-            console.log('error', error);
-          }, {enableHighAccuracy: true, forceRequestLocation: true, distanceFilter: 5});
-        }, 500);
-        return () => clearInterval(interval);
-
-        // return () => Geolocation.clearWatch(watchId);
     }, [isPermissionChecked]);
 
     return (
@@ -238,7 +216,11 @@ export const MapScreen = (props) => {
             
 
             <View style={{...styles.container,flex: 5}}>
-                <ImageBackground ref={shoppingMapImage} source={image} style={{...styles.image}} onLayout={ImageBackgroundOnLayout}>
+                <ImageBackground ref={shoppingMapImage} 
+                    source={image} 
+                    style={{...styles.image}}
+                    imageStyle={{resizeMode: 'stretch'}}
+                    onLayout={ImageBackgroundOnLayout}>
                     <Svg height={mapHeight} width={mapWidth} style={{position:'absolute', top: 0}}>
                         {mapLines}
                         {/* <Circle cx="50" cy="50" r="5" fill="red" /> */}

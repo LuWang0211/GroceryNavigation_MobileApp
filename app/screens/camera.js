@@ -90,8 +90,8 @@ export const SmallCamera = () => {
 const styles = StyleSheet.create({
     small: {
       flex: 1,
-      maxHeight: 0,
-      height: 50,
+      maxHeight: 1,
+      height: 1,
       overflow: 'hidden'
     }
   });
