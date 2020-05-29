@@ -1,8 +1,8 @@
 
-import React, { PureComponent, Component, useCallback, useState } from 'react';
+import React, { PureComponent, Component, useCallback, useState, useContext } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { RNCamera } from 'react-native-camera';
-import RNTextDetector from 'react-native-text-detector';
+import { ShoppingListContext} from '../context/shoppingListContext'
 
 const PendingView = () => (
   <View
@@ -17,26 +17,71 @@ const PendingView = () => (
   </View>
 );
 
+export class TextCaptureComponent {
+  bounds;
+  text;
+}
+
+export class TextCapture {
+  components = []
+}
+
 export const CameraTest = () => {
 
-  const [detection, setDetection] = useState('No Detection')
+  const [detection, setDetection] = useState('No Detection');
+
+  const { reportTextCapture } = useContext(ShoppingListContext);
 
   const takePicture = async function(camera) {
     console.log('take picture');
     const options = { quality: 0.5, base64: true, skipProcessing: true };
     const data = await camera.takePictureAsync(options);
     //  eslint-disable-next-line
-    console.log(data );
+    console.log(data.uri );
 
-    const result = await RNTextDetector.detectFromUri(data.uri);
+    // const result = await RNTextDetector.detectFromUri(data.uri);
 
-    console.log('detection', result);
+    // console.log('detection, origianl result', result);
 
-    setDetection(result.map(e => e.text).join(" - "));
+    // setDetection(result.map(e => e.text).join(" - "));
+
+    // console.log('reset result text', detection);
+
+    const AisleNo1 = new Set(['1', 'hispanic foods', 'can prepared', 'pckgd. dinners', 'pckgd.', 'pasta', 'condiments', 'condiments']);
+    const AisleNo2 = new Set(['2', 'food storage', 'spices', 'peanut butter', 'cake mixes', 'soups', 'canned fruit']);
+
+    let detectionlist = detection.split(" - ");
+
+    for (let i = 0; i < detectionlist.length; i++) {
+      // console.log('test: ', detectionlist[i], detectionlist[i] in AisleNo1);
+      if ( AisleNo1.has(detectionlist[i])) {
+        console.log('You are in Aisle One');
+        break;
+      }
+
+      if ( AisleNo2.has(detectionlist[i])) {
+        console.log('You are in Aisle Two');
+        break;
+      }
+
+    }
   };
 
-  const onTextRecognized = (response) => {
-    console.log('onTextRecognized', response);
+  const onTextRecognized = ({ textBlocks }) => {
+    const textCapture = new TextCapture();
+
+    for (const textBlock of textBlocks) {
+      const components = textBlock.components;
+
+      for (const component of components) {
+        const textCaptureBlock = new TextCaptureComponent();
+        textCaptureBlock.bounds = component.bounds;
+        textCaptureBlock.text = component.value;
+        textCapture.components.push(textCaptureBlock);        
+      }
+    }
+    
+    reportTextCapture(textCapture);
   };
 
   return (
@@ -59,6 +104,7 @@ export const CameraTest = () => {
           buttonPositive: 'Ok',
           buttonNegative: 'Cancel',
         }}
+        onTextRecognized={onTextRecognized}
       >
         {({ camera, status, recordAudioPermissionStatus }) => {
           if (status !== 'READY') return <PendingView />;
@@ -67,7 +113,6 @@ export const CameraTest = () => {
               <TouchableOpacity onPress={() => takePicture(camera)} style={styles.capture}>
                 <Text style={{ fontSize: 14 }}> Snap </Text>
               </TouchableOpacity>
-                
             </View>
           );
         }}

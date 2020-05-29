@@ -1,11 +1,14 @@
 import React, {useState} from 'react';
-import { theme, mocks } from '../constants';
+import { mocks } from '../constants';
+import { localize} from '../tools/mapHelper';
 
 export const ShoppingListContext = React.createContext({});
 
 export const ShoppingListContextProvider = (props) => {
 
     const [shoppingListDataDict, setShoppingListDataDict ] = useState({});
+    const [textCapture, setTextCapture ] = useState(null);
+    const [location, setLocation ] = useState('ZZ');
 
     const shoppingListData = Object.values(shoppingListDataDict);
 
@@ -38,13 +41,26 @@ export const ShoppingListContextProvider = (props) => {
         setShoppingListDataDict({...shoppingListDataDict});
     }; 
 
+    const reportTextCapture = (textCapture) => {
+        setTextCapture(textCapture);
+
+        const newLocation = localize(textCapture);
+
+        if (newLocation != location && newLocation != null) {
+            setLocation(newLocation);
+        }
+    }
+
     return (
     <ShoppingListContext.Provider value= {
         {
             shoppingListData,
             categories: mocks.categories,
             addShoppingListItem,
-            deleteShoppingListItem
+            deleteShoppingListItem,
+            textCapture,
+            reportTextCapture,
+            location
         }
     }>
         {props.children}

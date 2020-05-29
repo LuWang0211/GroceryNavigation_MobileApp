@@ -6,7 +6,7 @@ import { Line } from 'react-native-svg';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 
-export const drawLine = (startAnchor, endAnchor, referenceWidth, referenceHeight, key = "linekey") => {
+export const drawLine = (startAnchor, endAnchor, referenceWidth, referenceHeight, key = "linekey", color="blue", strokeWidth=3) => {
     if (!anchorPositions[startAnchor] || !anchorPositions[endAnchor]) {
         throw new Error("I haven't seen this anchor before");
     }
@@ -19,11 +19,12 @@ export const drawLine = (startAnchor, endAnchor, referenceWidth, referenceHeight
 
     const xEndRef = endX / mapTemplateWidth * referenceWidth;
     const yEndRef = endY / mapTemplateHeight * referenceHeight;
+    key = Math.random();
 
-    return <Line key={key} x1={xStartRef} y1={yStartRef} x2={xEndRef} y2={yEndRef} stroke="red" strokeWidth="3" />;
+    return <Line key={key} x1={xStartRef} y1={yStartRef} x2={xEndRef} y2={yEndRef} stroke={color} strokeWidth={strokeWidth} />;
 }
 
-export const drawPath = (startAnchor, endAnchor, referenceWidth, referenceHeight, keyPrefix = 'key') => {
+export const drawPath = (startAnchor, endAnchor, referenceWidth, referenceHeight, keyPrefix = 'key', color="blue", strokeWidth=3) => {
     const path = findShortestPath(startAnchor, endAnchor);
 
     let start = path.shift();
@@ -35,7 +36,7 @@ export const drawPath = (startAnchor, endAnchor, referenceWidth, referenceHeight
         next = path.shift();
         // console.log(start, next);
 
-        const line = drawLine(start, next, referenceWidth, referenceHeight, keyPrefix + (i++));
+        const line = drawLine(start, next, referenceWidth, referenceHeight, keyPrefix + (i++), color, strokeWidth);
 
         lines.push(line);
 
@@ -45,19 +46,20 @@ export const drawPath = (startAnchor, endAnchor, referenceWidth, referenceHeight
     return lines;
 }
 
-export const drawPlannedPath = (goalAnchors, referenceWidth, referenceHeight, start='ZZ') => {
+export const drawPlannedPath = (goalAnchors, referenceWidth, referenceHeight, start='ZZ', color="gray", strokeWidth=3) => {
     let allPath = [];
+    let key = Math.random()
     while(goalAnchors.length > 0) {
 
         const nextGoal = goalAnchors.shift();
 
-        const path = drawPath(start, nextGoal, referenceWidth, referenceHeight, `key-${nextGoal}`);
+        const path = drawPath(start, nextGoal, referenceWidth, referenceHeight, `key-${key}-${nextGoal}`, color, 3);
 
         allPath = allPath.concat(path);
 
         start = nextGoal;
 
-        console.log('drawPlannedPath', start, nextGoal);
+        // console.log('drawPlannedPath', start, nextGoal);
     }
 
     return allPath;

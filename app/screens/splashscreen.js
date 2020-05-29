@@ -1,21 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {View, Button, Text, ImageBackground, StyleSheet} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const image = require("../../images/login.jpg");
 
-// @inject("stores")
 export const SplashScreen = (props) => {
-  // constructor(props) {
-  //   super(props)
-  // }
-  // componentDidMount() {
-  //   const {stores, navigation } = this.props;
-  //   setTimeout(() => {
-  //     navigation.navigate("Login")
-  //   }, stores.config.SplashTime)
-  // }
-    // const { stores } = this.props
 
     const navigation = useNavigation();
 
@@ -24,17 +13,17 @@ export const SplashScreen = (props) => {
 
         <ImageBackground source={image} style={styles.image}>
             <Text  style={styles.text}>Hi, I'm your shopping assistant </Text>
-
-            <Button
-              style={{width:"50%"}}
-              title="Tap here to start"
-              onPress={() => navigation.navigate('Home')}
-            />
+            <View style={styles.btn}>
+              <Button
+                title="Tap here to start"
+                color = "#E63F5D"
+                onPress={() => navigation.navigate('Home')}
+              />
+            </View>
         </ImageBackground>
       </View>
     )
 }
-
 
 const styles = StyleSheet.create({
   container: {
@@ -49,8 +38,13 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "white",
-    fontSize: 20,
+    fontSize: 25,
     fontWeight: "bold",
     textAlign: "center"
-  }
+  },
+  btn: {
+    padding: 40,
+    flexDirection: 'row',
+    justifyContent: 'center'
+  },
 })

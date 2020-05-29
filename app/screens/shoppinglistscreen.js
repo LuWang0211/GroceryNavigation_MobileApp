@@ -1,17 +1,18 @@
-import React, { Component, useContext } from 'react';
+import React, { useContext } from 'react';
 import {View, Button, Text, FlatList, SafeAreaView, Image, StyleSheet } from 'react-native';
 import { useNavigation, createNavigatorFactory } from '@react-navigation/native';
 import { mocks } from '../constants';
 import { ShoppingListContext } from '../context/shoppingListContext';
 import { planShopping } from '../tools/mapHelper'
 
-function Item({ image, name, count, onDelete }) {
+function Item({ image, name, count, aisle, onDelete }) {
     return (
       <View style={styles.item}>
-        <Image size={50} source={image} />
+        <Image style={{...styles.img}} source={image} />
         <Text style={{...styles.text, flex:1}}>{name}</Text>
-        <Text style={{...styles.text, flex:1}}>{count}</Text>
-        <Button style={{flex:1}}title="delete" onPress={onDelete} />
+        <Text style={{...styles.text, flex:1}}>Quantity: {count}</Text>
+        {/* <Text style={{...styles.text, flex:1}}>Aisle: {aisle}</Text> */}
+        <Button style={{flex:1}}  color="#E63F5D"  title="delete" onPress={onDelete} />
       </View>
     );
   }
@@ -32,16 +33,19 @@ export const ShoppinglistScreen = (props) => {
         <View style={styles.container}>
             <Text style={{...styles.header, flex:1, minHeight:20}}> YOUR SHOPPING LIST </Text>
 
-            <Text style={{...styles.text, flex:1, minHeight:20}}> Sorry, your shopping list is empty! </Text>
+            <Text style={{...styles.header, flex:1, minHeight:20}}> Sorry, your shopping list is empty! </Text>
 
-            <View style={{flex:2, minHeight:20, marginVertical: 10}}>
+            <View style={styles.btn}>
                 <Button
                 title="Continue to see the store map"
+                color = "#E63F5D"
                 onPress={() => navigation.navigate('Map')}
                 />
-
+            </View>
+            <View style={styles.btn}>
                 <Button
                 title="Back to edit shopping list"
+                color = "#E63F5D"
                 onPress={() => navigation.navigate('Home')}
                 />
             </View>
@@ -58,7 +62,7 @@ export const ShoppinglistScreen = (props) => {
                 <FlatList 
                     data={shoppingListData}
                     renderItem={({item: {category, count}}) => {
-                        return <Item image={category.image} name={category.name} count={count} onDelete={() => {
+                        return <Item image={category.image} name={category.name} count={count} aisle={category.aisle} onDelete={() => {
                             deleteShoppingListItem(category);
                         }} />;
                     }}
@@ -67,41 +71,52 @@ export const ShoppinglistScreen = (props) => {
                 <Text style={styles.text}> {mock_list.id} </Text>
             </SafeAreaView>
 
-            <View style={{flex:1, minHeight:20, marginVertical: 10}}>
-                <Button
-                title="Tap here to start"
+            <View style={styles.btn}>
+              <Button
+                title="OPEN MAP, START SHOPPING"
+                color = "#E63F5D"
                 onPress={() => navigation.navigate('Map')}
-                />
+              />
             </View>
+
         </View>
     )
 }
 
 
 const styles = StyleSheet.create({
-container: {
-    flex: 200,
-    flexDirection: "column"
-},
-header: {
-    color: "black",
-    fontSize: 20,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginVertical: 10,
-},
-item: {
-    flex: 3,
-    flexDirection: "row",
-    backgroundColor: 'lightgray',
-    padding: 10,
-    marginVertical: 1,
-    marginHorizontal: 8,
-},
-text: {
-    color: "black",
-    fontSize: 20,
-    textAlign: "left",
-    marginHorizontal: 10
-}
+    container: {
+        flex: 200,
+        flexDirection: "column"
+    },
+    header: {
+        color: "black",
+        fontSize: 20,
+        fontWeight: "bold",
+        textAlign: "center",
+        marginVertical: 10,
+    },
+    item: {
+        flex: 3,
+        flexDirection: "row",
+        backgroundColor: 'lightgray',
+        padding: 10,
+        marginVertical: 1,
+        marginHorizontal: 8,
+    },
+    text: {
+        color: "black",
+        fontSize: 15,
+        textAlign: "left",
+        marginHorizontal: 10
+    },
+    img: {
+        width: 50,
+        height: 50,
+    },
+    btn: {
+        padding: 20,
+        flexDirection: 'row',
+        justifyContent: 'center'
+    },
 })
