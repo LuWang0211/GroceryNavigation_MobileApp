@@ -19,6 +19,7 @@ export const drawLine = (startAnchor, endAnchor, referenceWidth, referenceHeight
 
     const xEndRef = endX / mapTemplateWidth * referenceWidth;
     const yEndRef = endY / mapTemplateHeight * referenceHeight;
+    key = Math.random();
 
     return <Line key={key} x1={xStartRef} y1={yStartRef} x2={xEndRef} y2={yEndRef} stroke={color} strokeWidth={strokeWidth} />;
 }

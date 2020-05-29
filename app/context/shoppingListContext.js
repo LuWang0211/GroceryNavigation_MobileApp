@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { theme, mocks } from '../constants';
+import { mocks } from '../constants';
 import { localize} from '../tools/mapHelper';
 
 export const ShoppingListContext = React.createContext({});
