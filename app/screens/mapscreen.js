@@ -53,6 +53,8 @@ export const MapScreen = (props) => {
 
     const [iconCur, setIconPosition] = useState(null);
 
+    const [isPromptShown, setIsPromptShown] = useState(false);
+
     useEffect(() => {
         async function getPermission() {
             if (isPermissionChecked) {
@@ -65,6 +67,11 @@ export const MapScreen = (props) => {
         }
         getPermission();
 
+        if (shoppingListData.length - 1 < activeStep) {
+            let activeStep = shoppingListData.length - 1;
+            setActiveStep(activeStep < 0 ? 0 : activeStep);
+        }
+       
     }, [shoppingListData]);
 
     useEffect(() => {
@@ -112,6 +119,42 @@ export const MapScreen = (props) => {
         sortedShoppingListData = planShopping(shoppingListData);
     }
 
+    useEffect(() =>{
+        console.log('debug', location);
+
+        if (isPromptShown || !sortedShoppingListData) {
+            return;
+        }
+
+        if (!mocks.productToLocationReverseMap[location]) {
+            return;
+        }
+        
+        const closeItems = mocks.productToLocationReverseMap[location];
+
+        const targetShoppingListItem = sortedShoppingListData[limitedActiveStep];
+        const { id: targetShoppingItemId } = targetShoppingListItem.category;
+
+        // console.log('targetShoppingItemId', targetShoppingItemId)
+        // console.log('goalAnchors', shoppingListData[shoppingListData.length -1].category.id)
+
+        for (let item of closeItems) {
+            if (item == targetShoppingItemId) {
+                Alert.alert(`You are now near ${item}, make sure you have put it into the cart.`, undefined, 
+                    [ 
+                        {text: 'OK', onPress: () => {
+                            setActiveStep(activeStep + 1);
+                            setIsPromptShown(false);
+                        }}
+                    ]
+                );
+                setIsPromptShown(true);
+                break;
+            }
+        }
+
+    },  [sortedShoppingListData, location, limitedActiveStep]);
+
     let pre_position = [];
 
     // console.log('shoppingMapImage');
@@ -127,10 +170,9 @@ export const MapScreen = (props) => {
         setMapResized(true);
     }
 
-
     // const path = "M24.3 30C11.4 30 5 43.3 5 50s6.4 20 19.3 20c19.3 0 32.1-40 51.4-40 C88.6 30 95 43.3 95 50s-6.4 20-19.3 20C56.4 70 43.6 30 24.3 30z";
 
-    if (!shoppingListData || shoppingListData.length == 0) {
+    if (!shoppingListData || shoppingListData.length == 0 || !sortedShoppingListData || activeStep == undefined) {
         return (
             <View style={styles.container}  >
                 <Text style={{ ...styles.header, minHeight: 20 }}>MAP</Text>
@@ -143,27 +185,30 @@ export const MapScreen = (props) => {
         )
     }
 
+    let limitedActiveStep = Math.min(shoppingListData.length - 1, activeStep);
+
     return (
         <View key={'PSKEY' + shoppingListData.length} style={styles.container}  >
             <Text style={{ ...styles.header, minHeight: 20 }}>MAP</Text>
             <ScrollView
                 showsHorizontalScrollIndicator={true} horizontal={true}
                 automaticallyAdjustContentInsets={true}
-                style={{ paddingLeft: 20, paddingRight: 40, flex: 1 }}
-
-
+                style={{ paddingLeft: 10, paddingRight: 10, flex: 1, minHeight: 10}}
             >
-                <TouchableOpacity
+                {/* <TouchableOpacity
                     onPress={() => {
                         if (activeStep == shoppingListData.length - 1) {
+                            Alert.alert('You have gotten all items, Please take your phone and checkout');
                             return;
                         }
                         setActiveStep(activeStep + 1);
                         Alert.alert('Please ensure that you have put the item into your cart');
                     }}>
-                    <Text style={{ width: '10%', color: "white" }}> next </Text>
-                </TouchableOpacity>
-                {<ProgressSteps key={'PSKEY' + shoppingListData.length} style={{ flex: 2 }} removeBtnRow={true} activeStep={activeStep} >
+                    <Text style={{ width: '10%', color: "white" }}> N </Text>
+                </TouchableOpacity> */}
+                {<ProgressSteps key={'PSKEY' + shoppingListData.length} style={{ flex: 2 }} removeBtnRow={true} activeStep={limitedActiveStep} 
+                    activeLabelColor = "#E63F5D" activeStepIconBorderColor ="#E63F5D" completedProgressBarColor ="lightgray" completedStepIconColor='lightgray'
+                    activeLabelColor = "#E63F5D">
                     {
                         ([...sortedShoppingListData] || []).map((entry) => {
                             const { category: category_, count } = entry;
@@ -174,7 +219,7 @@ export const MapScreen = (props) => {
                                     onNext={() => Alert.alert('Please ensure that you have put the item into your cart')}
                                     removeBtnRow={true}
                                 >
-                                    <Text>{category.name}</Text>
+                                    <Text style={{color:"#E63F5D"}} >{category.name}</Text>
                                 </ProgressStep>);
                         })
                     }
@@ -182,8 +227,8 @@ export const MapScreen = (props) => {
                 </ProgressSteps>}
 
             </ScrollView>
-
-            <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginBottom: 10 }}>
+{/* 
+            <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginBottom: 10 }}> */}
                 {/* <Button
                         style={{ width: '40%'}}
                         onPress={() => {
@@ -207,7 +252,7 @@ export const MapScreen = (props) => {
                     title="Next"
                 /> */}
 
-            </View>
+            {/* </View> */}
 
 
             <View style={{ ...styles.container, flex: 5 }}>
@@ -241,9 +286,6 @@ export const MapScreen = (props) => {
               />
             </View>
 
-            {/* <ImageBackground size={200} source={image} style={{...styles.image, width: 500}}>
-                <Text  style={styles.text}> temp map </Text>
-            </ImageBackground> */}
         </View>
     )
 };

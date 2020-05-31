@@ -1,30 +1,39 @@
-export const mapTemplateWidth = 648;
-export const mapTemplateHeight = 707;
+export const mapTemplateWidth = 530;
+export const mapTemplateHeight = 635;
 
 /**
  * Code to build the following anchor positions
  */
 
-// const xSteps = [25, 151, 85, 85, 81, 86, 102];
-// const ySteps = [116, 120, 119, 122, 136];
+const xSteps = [28.75, 65.5, 65.5, 65.5, 65.5, 65.5, 65.5, 65.5, 43.5];
+const ySteps = [66, 66, 167, 229, 114];
 
-// const layout = ['
-//     ['A', 'B', 'C', 'D', 'E', 'F', 'G'],
-//     ['BB','H','I','J','K','L','M'],
-//     ['N','O','P','Q','R','S','T'],
-//     ['_','U','V','W','X','Y','Z'],
-//     ['AA','AB','AC','AD','AE','AF','AG']
+// let sum_x = xSteps.reduce(function(a, b){
+//     return a + b;
+// }, 0);
+// let sum_y = ySteps.reduce(function(a, b){
+//     return a + b;
+// }, 0);
+// console.log(sum_x);
+// console.log(sum_y);
+
+// const layout = [
+//     ['AB', 'AA', 'AE', 'V', 'Q', 'AF', 'L', 'K'],
+//     ['AC','Z','W','U','R','P','M', 'J'],
+//     ['AD','Y','X','T','S','O','N', 'I'],
+//     ['A','B','C','D','E','F','G', 'H'],
 // ]
 
 // let x = 0, y = 0;
-// for (let i = 0; i < 7; i++) {
-//     x += xSteps['i];
+// let anchorPositions = {};
+// for (let i = 0; i < 8; i++) {
+//     x += xSteps[i];
 //     y = 0;
-//     for (let j = 0; j < 5; j++) {
-//         y += ySteps['j];
-//         const anchor = layout['j]['i];
+//     for (let j = 0; j < 4; j++) {
+//         y += ySteps[j];
+//         const anchor = layout[j][i];
 
-//         anchorPositions['anchor] = {
+//         anchorPositions[anchor] = {
 //             x,
 //             y
 //         }
@@ -32,184 +41,75 @@ export const mapTemplateHeight = 707;
 // }
 
 export const anchorPositions = {
-    "A": {
-        "x": 25,
-        "y": 116
-    },
-    "BB": {
-        "x": 25,
-        "y": 236
-    },
-    "N": {
-        "x": 25,
-        "y": 355
-    },
-    "AA": {
-        "x": 25,
-        "y": 613
-    },
-    "B": {
-        "x": 176,
-        "y": 116
-    },
-    "H": {
-        "x": 176,
-        "y": 236
-    },
-    "O": {
-        "x": 176,
-        "y": 355
-    },
-    "U": {
-        "x": 176,
-        "y": 477
-    },
-    "AB": {
-        "x": 176,
-        "y": 613
-    },
-    "C": {
-        "x": 261,
-        "y": 116
-    },
-    "I": {
-        "x": 261,
-        "y": 236
-    },
-    "P": {
-        "x": 261,
-        "y": 355
-    },
-    "V": {
-        "x": 261,
-        "y": 477
-    },
-    "AC": {
-        "x": 261,
-        "y": 613
-    },
-    "D": {
-        "x": 346,
-        "y": 116
-    },
-    "J": {
-        "x": 346,
-        "y": 236
-    },
-    "Q": {
-        "x": 346,
-        "y": 355
-    },
-    "W": {
-        "x": 346,
-        "y": 477
-    },
-    "AD": {
-        "x": 346,
-        "y": 613
-    },
-    "E": {
-        "x": 427,
-        "y": 116
-    },
-    "K": {
-        "x": 427,
-        "y": 236
-    },
-    "R": {
-        "x": 427,
-        "y": 355
-    },
-    "X": {
-        "x": 427,
-        "y": 477
-    },
-    "AE": {
-        "x": 427,
-        "y": 613
-    },
-    "F": {
-        "x": 513,
-        "y": 116
-    },
-    "L": {
-        "x": 513,
-        "y": 236
-    },
-    "S": {
-        "x": 513,
-        "y": 355
-    },
-    "Y": {
-        "x": 513,
-        "y": 477
-    },
-    "AF": {
-        "x": 513,
-        "y": 613
-    },
-    "G": {
-        "x": 615,
-        "y": 116
-    },
-    "M": {
-        "x": 615,
-        "y": 236
-    },
-    "T": {
-        "x": 615,
-        "y": 355
-    },
-    "Z": {
-        "x": 615,
-        "y": 477
-    },
-    "AG": {
-        "x": 615,
-        "y": 613
-    },
-    "ZZ": {
-        "x": 615,
-        "y": 679
-    },
+    'A': {'x': 28.75, 'y': 528},
+    'AA': {'x': 106, 'y': 66},
+    'AB': {'x': 28.75, 'y': 66},
+    'AC': {'x': 28.75, 'y': 132},
+    'AD': {'x': 28.75, 'y': 299},
+    'AE': {'x': 171, 'y': 66},
+    'AF': {'x': 357, 'y': 66},
+    'B': {'x': 106, 'y': 528},
+    'C': {'x': 171, 'y': 528},
+    'D': {'x': 235, 'y': 528},
+    'E': {'x': 295, 'y': 528},
+    'F': {'x': 357, 'y': 528},
+    'G': {'x': 422, 'y': 528},
+    'H': {'x': 487, 'y': 528},
+    'I': {'x': 487, 'y': 299},
+    'J': {'x': 487, 'y': 132},
+    'K': {'x': 487, 'y': 66},
+    'L': {'x': 422, 'y': 66},
+    'M': {'x': 422, 'y': 132},
+    'N': {'x': 422, 'y': 299},
+    'O': {'x': 357, 'y': 299},
+    'P': {'x': 357, 'y': 132},
+    'Q': {'x': 295, 'y': 66},
+    'R': {'x': 295, 'y': 132},
+    'S': {'x': 295, 'y': 299},
+    'T': {'x': 235, 'y': 299},
+    'U': {'x': 235, 'y': 132},
+    'V': {'x': 235, 'y': 66},
+    'W': {'x': 171, 'y': 132},
+    'X': {'x': 171, 'y': 299},
+    'Y': {'x': 106, 'y': 299},
+    'Z': {'x': 106, 'y': 132},
+    'ZZ': {'x': 29, 'y': 584},
 };
 
 export const adjacency = {
-    'A': ['B', 'BB'],
-    'B': ['A','C','H'],
-    'C': ['B','D','I'],
-    'D': ['C','J','E'],
-    'E': ['D','K','F'],
-    'F': ['E','L','G'],
-    'G': ['F','M'],
-    'BB': ['A','N'],
-    'H': ['B','O'],
-    'I': ['C','P'],
-    'J': ['D','Q'],
-    'K': ['E','R'],
-    'L': ['F','S'],
-    'M': ['G','T'],
-    'N': ['BB','O','AA'],
-    'O': ['H','N','P','U'],
-    'P': ['I','O','Q','V'],
-    'Q': ['J','P','R','W'],
-    'R': ['K','Q','S','X'],
-    'S': ['L','R','T','Y'],
-    'T': ['M','S','Z'],
-    'U': ['O','AB'],
-    'V': ['P','AC'],
-    'W': ['Q','AD'],
-    'X': ['R','AE'],
-    'Y': ['S','AF'],
-    'Z': ['T','AG'],
-    'AA': ['N', 'AB'],
-    'AB': ['AA','U','AC'],
-    'AC': ['V','AB','AD'],
-    'AD': ['W','AC','AE'],
-    'AE': ['X','AD','AF'],
-    'AF': ['AE','Y','AG'],
-    'AG': ['Z','AF','ZZ'],
-    'ZZ': ['AG']
+    'A': ['B', 'AD', 'ZZ'],
+    'B': ['A','C','Y'],
+    'C': ['B','D','X'],
+    'D': ['C','E','T'],
+    'E': ['D','S','F'],
+    'F': ['E','O','G'],
+    'G': ['F','N', 'H'],
+    'H': ['G','I'],
+    'I': ['J','H'],
+    'J': ['K','I'],
+    'K': ['J','L'],
+    'L': ['AF','M','K'],
+    'M': ['L','N'],
+    'N': ['M','G'],
+    'O': ['P','F'],
+    'P': ['AF','O'],
+    'Q': ['V','R','AF'],
+    'R': ['S','Q'],
+    'S': ['E','R'],
+    'T': ['U','D'],
+    'U': ['V','T'],
+    'V': ['AE','U','Q'],
+    'W': ['AE','X'],
+    'X': ['W','C'],
+    'Y': ['B','Z'],
+    'Z': ['Y','AA'],
+    'AA': ['Z','AE','AB'],
+    'AB': ['AA','AC'],
+    'AC': ['AB','AD'],
+    'AD': ['AC','A'],
+    'AE': ['AA','W','V'],
+    'AF': ['Q','P','L'],
+    'ZZ': ['A']
 }
 
 // const column = [
@@ -230,63 +130,75 @@ export const adjacency = {
 
 // }
 
-const columnAssignment = {
-    "ZZ": 0,
-    "AG": 0,
-    "Z": 0,
-    "T": 0,
-    "M": 0,
-    "G": 0,
-    "AE": 1,
-    "X": 1,
-    "R": 1,
-    "K": 1,
-    "E": 1,
-    "AD": 2,
-    "W": 2,
-    "Q": 2,
-    "J": 2,
-    "D": 2,
-    "AC": 3,
-    "V": 3,
-    "P": 3,
-    "I": 3,
-    "C": 3,
-    "AB": 4,
-    "U": 4,
-    "O": 4,
-    "H": 4,
-    "B": 4,
-    "AA": 5,
-    "N": 5,
-    "BB": 5,
-    "A": 5
-}
+// const columnAssignment = {
+//     "ZZ": 0,
+//     "AG": 0,
+//     "Z": 0,
+//     "T": 0,
+//     "M": 0,
+//     "G": 0,
+//     "AE": 1,
+//     "X": 1,
+//     "R": 1,
+//     "K": 1,
+//     "E": 1,
+//     "AD": 2,
+//     "W": 2,
+//     "Q": 2,
+//     "J": 2,
+//     "D": 2,
+//     "AC": 3,
+//     "V": 3,
+//     "P": 3,
+//     "I": 3,
+//     "C": 3,
+//     "AB": 4,
+//     "U": 4,
+//     "O": 4,
+//     "H": 4,
+//     "B": 4,
+//     "AA": 5,
+//     "N": 5,
+//     "BB": 5,
+//     "A": 5
+// }
 
 const locationKeywordsDef = [
     [
-        ['AG'], ['1', 'hispanic foods', 'can prepared', 'pckgd. dinners', 'pckgd.', 'pasta', 'condiments', 'condiments']
+        ['ZZ'], []
     ],
     [
-        ['T'], ['2', 'food storage', 'spices', 'peanut butter', 'cake mixes', 'soups', 'canned fruit', 'w']
+        ['B'], ['1', 'hispanic foods', 'pckgd. dinners', 'condiments', 'condiment',]
     ],
     [
-        ['G'], ['eggs and dairy', 'eggs', 'dairy']
+        ['Y'], ['pasta', ]
     ],
     [
-        ['E'], ['meat']
+        ['C'], ['2', 'food storage', 'spices', 'peanut butter', 'cake mixes', 'soups', 'canned fruit']
     ],
     [
-        ['B'], ['seafood']
+        ['D'], ['3', 'pizza', 'entress', 'potatoes', 'vegetables']
     ],
     [
-        ['AF'], ['candies']
+        ['E'], ['4', 'yogurt', 'butter', 'ice', 'ice cream', 'cheese']
     ],
     [
-        ['AE'], ['local']
+        ['F'], ['5', 'tea', 'cereal', 'fruit', 'snacks', 'fruit snacks']
     ],
     [
-        ['R'], ['breakfast']
+        ['G'], ['6', 'water', 'chips', 'drinks', 'soft drinks', 'juices']
+    ],
+    [
+        ['H'], ['7', 'personal care', 'hair care', 'cough', 'cold', 'skin care', 'deodorant']
+    ],
+    [
+        ['AA'], ['seafood']
+    ],
+    [
+        ['V'], ['meet']
+    ],
+    [
+        ['L'], ['eggs and dairy', 'eggs', 'dairy']
     ],
 ]
 

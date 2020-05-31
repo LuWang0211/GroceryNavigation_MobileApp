@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { anchorPositions, adjacency, wordsToLocation } from '../constants/mapMetadata'
 
 /**

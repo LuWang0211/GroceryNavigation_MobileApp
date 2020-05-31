@@ -6,7 +6,7 @@ import { Line } from 'react-native-svg';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 
-export const drawLine = (startAnchor, endAnchor, referenceWidth, referenceHeight, key = "linekey", color="blue", strokeWidth=3) => {
+export const drawLine = (startAnchor, endAnchor, referenceWidth, referenceHeight, key = "linekey", color="#E63F5D", strokeWidth=3) => {
     if (!anchorPositions[startAnchor] || !anchorPositions[endAnchor]) {
         throw new Error("I haven't seen this anchor before");
     }
@@ -24,7 +24,7 @@ export const drawLine = (startAnchor, endAnchor, referenceWidth, referenceHeight
     return <Line key={key} x1={xStartRef} y1={yStartRef} x2={xEndRef} y2={yEndRef} stroke={color} strokeWidth={strokeWidth} />;
 }
 
-export const drawPath = (startAnchor, endAnchor, referenceWidth, referenceHeight, keyPrefix = 'key', color="blue", strokeWidth=3) => {
+export const drawPath = (startAnchor, endAnchor, referenceWidth, referenceHeight, keyPrefix = 'key', color="#E63F5D", strokeWidth=3) => {
     const path = findShortestPath(startAnchor, endAnchor);
 
     let start = path.shift();
@@ -75,7 +75,9 @@ export const iconPositions = (iconAnchor, referenceWidth, referenceHeight) => {
     const xStartRef = startX / mapTemplateWidth * referenceWidth;
     const yStartRef = startY / mapTemplateHeight * referenceHeight;
 
-    console.log('xStartRef, yStartRef',xStartRef, yStartRef)
+    // console.log('xStartRef, yStartRef',xStartRef, yStartRef)
+
+    console.log('iconAnchor', iconAnchor)
 
     return <Icon name="md-person" size={24} style={{top: yStartRef - 12 , left: xStartRef - 12, position:"absolute"}}/>;
 }
