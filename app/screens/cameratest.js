@@ -4,6 +4,8 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import { ShoppingListContext} from '../context/shoppingListContext'
 
+
+// cameratest.js is for camera/detection process test, camera.js is for actual real-time detection after testing
 const PendingView = () => (
   <View
     style={{

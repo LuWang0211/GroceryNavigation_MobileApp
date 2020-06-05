@@ -1,5 +1,5 @@
-export const mapTemplateWidth = 531;
-export const mapTemplateHeight = 635;
+export const mapTemplateWidth = 648;
+export const mapTemplateHeight = 707;
 
 /**
  * Code to build the following anchor positions

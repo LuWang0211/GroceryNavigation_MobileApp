@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import {View, Button, Text, FlatList, SafeAreaView, Image, StyleSheet } from 'react-native';
-import { useNavigation, createNavigatorFactory } from '@react-navigation/native';
+import { useNavigation  } from '@react-navigation/native';
 import { mocks } from '../constants';
 import { ShoppingListContext } from '../context/shoppingListContext';
 import { planShopping } from '../tools/mapHelper'
@@ -10,9 +10,9 @@ function Item({ image, name, count, aisle, onDelete }) {
       <View style={styles.item}>
         <Image style={{...styles.img}} source={image} />
         <Text style={{...styles.text, flex:1}}>{name}</Text>
-        <Text style={{...styles.text, flex:1}}>Quantity: {count}</Text>
-        {/* <Text style={{...styles.text, flex:1}}>Aisle: {aisle}</Text> */}
-        <Button style={{flex:1}}  color="#E63F5D"  title="delete" onPress={onDelete} />
+        <Text style={{...styles.text, flex:1}}>{count} in cart </Text>
+        <Text style={{...styles.text, flex:1}}>Aisle: {aisle}</Text>
+        <Button color="#E63F5D"  title="delete" onPress={onDelete} />
       </View>
     );
   }
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
         marginVertical: 10,
     },
     item: {
-        flex: 3,
+        flex: 5,
         flexDirection: "row",
         backgroundColor: 'lightgray',
         padding: 10,
