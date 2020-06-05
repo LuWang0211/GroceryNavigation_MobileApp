@@ -1,9 +1,9 @@
 import React, { useState, useContext } from 'react';
 import { Dimensions, Button, View, ScrollView, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { Partition } from '../newstyle/Partition';
-import { Card } from '../newstyle/Card';
-import { Badge } from '../newstyle/Badge';
-import { theme } from '../constants';
+import { Partition } from '../newstyle/Partition'; // Reference: "https://github.com/react-ui-kit/dribbble2react/tree/master/plant-app"
+import { Card } from '../newstyle/Card'; // Reference: "https://github.com/react-ui-kit/dribbble2react/tree/master/plant-app"
+import { Badge } from '../newstyle/Badge'; // Reference: "https://github.com/react-ui-kit/dribbble2react/tree/master/plant-app"
+import { theme } from '../constants'; // Reference: "https://github.com/react-ui-kit/dribbble2react/tree/master/plant-app"
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import { ShoppingListContext } from '../context/shoppingListContext'

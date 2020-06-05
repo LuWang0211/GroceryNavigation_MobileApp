@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {Text, StyleSheet, View, Dimensions, Button, Alert} from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Polygon, Polyline, LatLng } from 'react-native-maps';
 
+//For the next stage of development
 const styles = StyleSheet.create({
     container: {
         ...StyleSheet.absoluteFillObject,

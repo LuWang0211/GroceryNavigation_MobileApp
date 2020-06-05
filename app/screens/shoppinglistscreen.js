@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import {View, Button, Text, FlatList, SafeAreaView, Image, StyleSheet } from 'react-native';
-import { useNavigation, createNavigatorFactory } from '@react-navigation/native';
+import { useNavigation  } from '@react-navigation/native';
 import { mocks } from '../constants';
 import { ShoppingListContext } from '../context/shoppingListContext';
 import { planShopping } from '../tools/mapHelper'

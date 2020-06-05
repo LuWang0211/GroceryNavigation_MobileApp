@@ -135,7 +135,7 @@ export const MapScreen = (props) => {
         const targetShoppingListItem = sortedShoppingListData[limitedActiveStep];
         const { id: targetShoppingItemId } = targetShoppingListItem.category;
 
-        // console.log('targetShoppingItemId', targetShoppingItemId)
+        console.log('targetShoppingItemId', targetShoppingItemId)
         // console.log('goalAnchors', shoppingListData[shoppingListData.length -1].category.id)
 
         for (let item of closeItems) {
@@ -169,8 +169,6 @@ export const MapScreen = (props) => {
         setMapHeight(layout.height);
         setMapResized(true);
     }
-
-    // const path = "M24.3 30C11.4 30 5 43.3 5 50s6.4 20 19.3 20c19.3 0 32.1-40 51.4-40 C88.6 30 95 43.3 95 50s-6.4 20-19.3 20C56.4 70 43.6 30 24.3 30z";
 
     if (!shoppingListData || shoppingListData.length == 0 || !sortedShoppingListData || activeStep == undefined) {
         return (
@@ -207,7 +205,7 @@ export const MapScreen = (props) => {
                     <Text style={{ width: '10%', color: "white" }}> N </Text>
                 </TouchableOpacity> */}
                 {<ProgressSteps key={'PSKEY' + shoppingListData.length} style={{ flex: 2 }} removeBtnRow={true} activeStep={limitedActiveStep} 
-                    activeLabelColor = "#E63F5D" activeStepIconBorderColor ="#E63F5D" completedProgressBarColor ="lightgray" completedStepIconColor='lightgray'
+                    activeLabelColor = "#E63F5D" activeStepIconBorderColor ="#E63F5D" completedProgressBarColor ="gray" completedStepIconColor='gray'
                     activeLabelColor = "#E63F5D">
                     {
                         ([...sortedShoppingListData] || []).map((entry) => {
@@ -254,7 +252,6 @@ export const MapScreen = (props) => {
 
             {/* </View> */}
 
-
             <View style={{ ...styles.container, flex: 5 }}>
                 <ImageBackground ref={shoppingMapImage}
                     source={image}
@@ -269,15 +266,10 @@ export const MapScreen = (props) => {
                 </ImageBackground>
             </View>
 
+            {/*Real-time Detecion*/}
             <SmallCamera />
 
-            {/* <Button
-                // style={{flex: 1}}
-                // onPress={() => Alert.alert('in process')}
-                // title="Auto Navigation"
-                onPress={() => navigation.navigate('CameraTest')}
-                title="See Camera Detection (For Demo)"
-            /> */}
+            {/*For Test and Demo */}
             <View style={styles.btn}>
               <Button
                 title="See Camera Detection (For Demo)"
@@ -319,7 +311,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'lightgray',
     },
     icon: {
-        // marginHorizontal: 32,
         textAlign: "right",
         justifyContent: "flex-start"
     },

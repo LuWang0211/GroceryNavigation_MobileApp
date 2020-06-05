@@ -6,7 +6,7 @@ const categories = [
     price: 25.7,
     aisle: 1, 
     aislename: 'lunch and dinner',
-    image: require('../assets/icons/pasta.png'),
+    image: require('../assets/icons/pisa.png'),
     location: 'B'
   },
   {
@@ -214,7 +214,4 @@ for (let item of categories) {
 
 export {
   categories,
-  // explore,
-  // products,
-  // profile,
 }

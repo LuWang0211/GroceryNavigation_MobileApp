@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 
@@ -22,9 +22,9 @@ export const AppNavigator = () => {
           <Drawer.Screen name="Home" component={HomeScreen} />
           <Drawer.Screen name="Shopping List" component={ShoppinglistScreen} />
           <Drawer.Screen name="Map" component={MapScreen} />
-          <Drawer.Screen name="MapTest" component={MapTest} />
-          <Drawer.Screen name="CameraTest" component={CameraTest} />
-          <Drawer.Screen name="BeaconTest" component={BeaconTest} />
+          <Drawer.Screen name="MapTest(For Further Dev)" component={MapTest} />
+          <Drawer.Screen name="CameraTest(For Test)" component={CameraTest} />
+          <Drawer.Screen name="BeaconTest(For Test)" component={BeaconTest} />
         </Drawer.Navigator>
       </NavigationContainer>
     </ShoppingListContextProvider>
